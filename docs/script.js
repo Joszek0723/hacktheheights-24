@@ -1,5 +1,3 @@
-// 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
-
 // Replace with your Supabase URL and Anon Key
 const SUPABASE_URL = 'https://buhjgxfawueqidfdpebh.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1aGpneGZhd3VlcWlkZmRwZWJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgxNTQ0NzYsImV4cCI6MjA0MzczMDQ3Nn0.r4FQr9WCKUdgxVtwkw-FHRo2btxhwQvYCskgNgsmVZY';
