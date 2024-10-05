@@ -1,0 +1,30 @@
+// Replace with your Supabase URL and Anon Key
+const SUPABASE_URL = 'https://buhjgxfawueqidfdpebh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1aGpneGZhd3VlcWlkZmRwZWJoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgxNTQ0NzYsImV4cCI6MjA0MzczMDQ3Nn0.r4FQr9WCKUdgxVtwkw-FHRo2btxhwQvYCskgNgsmVZY';
+
+
+const { createClient } = supabase
+const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+console.log('Supabase Instance: ', _supabase)
+
+// import { createClient } from '@supabase/supabase-js'
+
+// // Create a single supabase client for interacting with your database
+// const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
+const form = document.getElementById("registrationForm");
+
+form.addEventListener('submit', async function (event) {
+    // Prevent the default form submission behavior
+    event.preventDefault();
+
+    // Retrieve values from the form field
+    let email = document.getElementById('email').value;
+    let username = document.getElementById('username').value;
+    let password = document.getElementById('password').value;
+    let role = document.getElementById('role').value;
+    const { error } = await _supabase
+        .from('users')
+        .insert({email: email, username: username, password: password, role: role})
+})
