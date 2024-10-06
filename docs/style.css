@@ -50,3 +50,45 @@ button {
 button:hover {
     background-color: #218838;
 }
+
+/* Basic Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar-left a, .navbar-right a {
+    color: white;
+    text-decoration: none;
+    padding: 0 15px;
+}
+
+.navbar-left a:hover, .navbar-right a:hover {
+    color: #ccc;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.dashboard-container {
+    padding: 20px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}

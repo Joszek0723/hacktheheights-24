@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BABPT Dashboard</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS -->
+</head>
+
+<body id="dashboardPage">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="#" class="logo">BABPT</a> <!-- Placeholder for logo -->
+            <a href="#" id="homeLink">Home</a>
+            <a href="#" id="aboutLink">About</a>
+        </div>
+        <div class="navbar-right">
+            <!-- User login status will dynamically update here -->
+            <a href="#" id="authLink">Log in/Register</a>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Content -->
+    <div class="dashboard-container">
+        <div id="dashboardContent">
+            <!-- Content based on user status will be rendered here -->
+        </div>
+    </div>
+
+    <!-- Supabase JS and Script.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="script.js"></script>
+
+</body>
+
+</html>
