@@ -16,7 +16,7 @@ console.log('Supabase Instance: ', _supabase)
 const form = document.getElementById("registrationForm");
 
 form.addEventListener('submit', async function (event) {
-    // Prevent the default form submission behavior
+    // // Prevent the default form submission behavior
     event.preventDefault();
 
     // Retrieve values from the form field
@@ -24,7 +24,41 @@ form.addEventListener('submit', async function (event) {
     let username = document.getElementById('username').value;
     let password = document.getElementById('password').value;
     let role = document.getElementById('role').value;
-    const { error } = await _supabase
+
+    // Reset the form after submission
+    document.getElementById("registrationForm").reset();
+
+
+    // const { error } = await _supabase
+    //     .from('users')
+    //     .insert({email: email, username: username, password: password, role: role})
+
+    // Step 1: Sign up the user in Supabase authentication system
+    const { user, error: authError } = await _supabase.auth.signUp({
+        email: email,
+        password: password
+    });
+
+    if (authError) {
+        console.error("Error signing up:", authError.message);
+        alert("Failed to sign up. Please try again.");
+        return;
+    }
+
+    // Step 2: If the auth signup was successful, insert the user into the custom 'users' table
+    const { error: dbError } = await _supabase
         .from('users')
-        .insert({email: email, username: username, password: password, role: role})
+        .insert({
+            email: email,
+            username: username,
+            password: password,  // It's recommended to hash the password before storing it!
+            role: role
+        });
+
+    if (dbError) {
+        console.error("Error inserting into users table:", dbError.message);
+        alert("Failed to create user in the database.");
+    } else {
+        alert("Sign-up successful! Please check your email to verify your account.");
+    }
 })
