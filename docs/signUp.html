@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Page Title</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS -->
+</head>
+
+<body id="registrationPage">
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="index.html" class="logo">BABPT</a> <!-- Placeholder for logo -->
+            <a href="#" id="aboutLink">About</a>
+        </div>
+        <div class="navbar-right">
+            <!-- User login status will dynamically update here -->
+            <a href="signUp.html" id="authLink">Log in/Register</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Sign Up</h1>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="role">Select Role:</label>
+                <select id="role" name="role" required>
+                    <option value="seller">Seller</option>
+                    <option value="buyer">Buyer</option>
+                </select>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script type="module" src="signUp.js"></script>
+</body>
+
+</html>
