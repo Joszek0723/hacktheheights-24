@@ -9,9 +9,7 @@ const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 document.addEventListener("DOMContentLoaded", () => {
 
     // Check which page is being loaded by checking the body element's ID
-    if (document.body.id === 'registrationPage') {
-        handleRegistration();
-    } else if (document.body.id === 'dashboardPage') {
+    if (document.body.id === 'dashboardPage') {
         handleDashboard();
     }
 
@@ -29,10 +27,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Fetch user role from the custom 'users' table
                 fetchUserRole(user.email);
+
+                // Add sign-out logic
+                authLink.addEventListener('click', async (event) => {
+                    event.preventDefault(); // Prevent default link behavior
+                    
+                    const { error } = await _supabase.auth.signOut();
+                    
+                    if (error) {
+                        console.error('Error signing out:', error.message);
+                        alert('Failed to sign out. Please try again.');
+                    } else {
+                        alert('You have successfully signed out!');
+                        // Redirect to login or home page after sign-out
+                        window.location.href = 'index.html';
+                    }
+                });
             } else {
                 // User is not logged in
                 authLink.textContent = 'Log in/Register';
-                authLink.href = 'signUp.html'; // Redirect to registration form
+                authLink.href = 'logIn.html'; // Redirect to registration form
 
                 // Display content for non-logged-in users
                 dashboardContent.innerHTML = `
