@@ -38,7 +38,7 @@ form.addEventListener('submit', async function (event) {
         email: email,
         password: password,
         options: {
-            redirectTo: 'https://joszek0723.github.io/hacktheheights-24/logIn.html'
+            emailRedirectTo: 'https://joszek0723.github.io/hacktheheights-24/logIn.html'
         }
     });
 
