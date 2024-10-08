@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (user) {
                 // User is logged in
                 authLink.textContent = 'Sign out';
-                authLink.href = '#'; // Placeholder for sign-out logic
+                // authLink.href = '#'; // Placeholder for sign-out logic
 
                 // Fetch user role from the custom 'users' table
                 fetchUserRole(user.email);
