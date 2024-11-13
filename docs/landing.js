@@ -24,9 +24,9 @@ const signUpForm = document.getElementsByClassName('sign-up')[0]
 signUpForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    let name = document.getElementById('name').value;
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
+    let name = document.getElementById('nameSignUp').value;
+    let email = document.getElementById('emailSignUp').value;
+    let password = document.getElementById('passwordSignUp').value;
 
     // Step 1: Sign up the user in Supabase authentication system
     const { user, error: authError } = await _supabase.auth.signUp({
@@ -58,5 +58,34 @@ signUpForm.addEventListener('submit', async function (event) {
         alert("Failed to create user in the database.");
     } else {
         alert("Sign-up successful! Please check your email to verify your account.");
+
+        document.getElementById('nameSignUp').value = '';
+        document.getElementById('emailSignUp').value = '';
+        document.getElementById('passwordSignUp').value = '';
     }
+})
+
+// Sign In Functionality
+
+const signInForm = document.getElementsByClassName('sign-in')[0]
+
+signInForm.addEventListener('click', async function (event) {
+    event.preventDefault();
+
+    let email = document.getElementById('emailSignIn').value;
+    let password = document.getElementById('passwordSignIn').value;
+
+    const { user, error: authError } = await _supabase.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if (authError) {
+        console.error("Error signing in: ", authError.message);
+        alert("Failed to sign in. Please check your credentials and try again.");
+        return;
+    }
+
+    localStorage.setItem('supabaseAccessToken', session.access_token);
+    window.location.href = 'dashboardNew.html';
 })
