@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 // User is not logged in
                 authLink.textContent = 'Log in/Register';
-                authLink.href = 'logIn.html'; // Redirect to registration form
+                authLink.href = 'landing.html'; // Redirect to registration form
 
                 // Display content for non-logged-in users
                 dashboardContent.innerHTML = `
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <button id="createAccountBtn">Make an account</button>
                 `;
                 document.getElementById('createAccountBtn').addEventListener('click', () => {
-                    window.location.href = 'signUp.html'; // Redirect to registration form
+                    window.location.href = 'landing.html'; // Redirect to registration form
                 });
             }
         });
