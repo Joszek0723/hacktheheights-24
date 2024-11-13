@@ -69,13 +69,13 @@ signUpForm.addEventListener('submit', async function (event) {
 
 const signInForm = document.getElementsByClassName('sign-in')[0]
 
-signInForm.addEventListener('click', async function (event) {
+signInForm.addEventListener('submit', async function (event) {
     event.preventDefault();
 
     let email = document.getElementById('emailSignIn').value;
     let password = document.getElementById('passwordSignIn').value;
 
-    const { user, error: authError } = await _supabase.auth.signInWithPassword({
+    const { data: sessionData, error: authError } = await _supabase.auth.signInWithPassword({
         email: email,
         password: password
     });
@@ -86,6 +86,6 @@ signInForm.addEventListener('click', async function (event) {
         return;
     }
 
-    localStorage.setItem('supabaseAccessToken', session.access_token);
+    localStorage.setItem('supabaseSession', JSON.stringify(sessionData.session));
     window.location.href = 'dashboardNew.html';
 })
