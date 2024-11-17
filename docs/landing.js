@@ -28,41 +28,65 @@ signUpForm.addEventListener('submit', async function (event) {
     let email = document.getElementById('emailSignUp').value;
     let password = document.getElementById('passwordSignUp').value;
 
-    // Step 1: Sign up the user in Supabase authentication system
-    const { user, error: authError } = await _supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-            emailRedirectTo: 'https://joszek0723.github.io/hacktheheights-24/'
-        }
-    });
-
-    if (authError) {
-        console.error("Error signing up:", authError.message);
-        alert("Failed to sign up. Please try again.");
-        return;
-    }
-
-    // Step 2: If the auth signup was successful, insert the user into the custom 'users' table
-    const { error: dbError } = await _supabase
-        .from('users')
-        .insert({
-            email: email,
-            name: name,
-            password: password,  // It's recommended to hash the password before storing it!
-            role: 'buyer'
+    try {
+        const response = await fetch("/sign-up", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password }),
         });
 
-    if (dbError) {
-        console.error("Error inserting into users table:", dbError.message);
-        alert("Failed to create user in the database.");
-    } else {
-        alert("Sign-up successful! Please check your email to verify your account.");
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail);
+        }
+
+        alert("Sign up successful! Please verify your email.");
 
         document.getElementById('nameSignUp').value = '';
         document.getElementById('emailSignUp').value = '';
         document.getElementById('passwordSignUp').value = '';
+    } catch (error) {
+        console.error("Error during sign up: ", error.message);
+        alert("Failed to sign up. Please try again.");
     }
+
+    // // Step 1: Sign up the user in Supabase authentication system
+    // const { user, error: authError } = await _supabase.auth.signUp({
+    //     email: email,
+    //     password: password,
+    //     options: {
+    //         emailRedirectTo: 'https://joszek0723.github.io/hacktheheights-24/'
+    //     }
+    // });
+
+    // if (authError) {
+    //     console.error("Error signing up:", authError.message);
+    //     alert("Failed to sign up. Please try again.");
+    //     return;
+    // }
+
+    // // Step 2: If the auth signup was successful, insert the user into the custom 'users' table
+    // const { error: dbError } = await _supabase
+    //     .from('users')
+    //     .insert({
+    //         email: email,
+    //         name: name,
+    //         password: password,  // It's recommended to hash the password before storing it!
+    //         role: 'buyer'
+    //     });
+
+    // if (dbError) {
+    //     console.error("Error inserting into users table:", dbError.message);
+    //     alert("Failed to create user in the database.");
+    // } else {
+    //     alert("Sign-up successful! Please check your email to verify your account.");
+
+    //     document.getElementById('nameSignUp').value = '';
+    //     document.getElementById('emailSignUp').value = '';
+    //     document.getElementById('passwordSignUp').value = '';
+    // }
 })
 
 // Sign In Functionality
@@ -75,17 +99,38 @@ signInForm.addEventListener('submit', async function (event) {
     let email = document.getElementById('emailSignIn').value;
     let password = document.getElementById('passwordSignIn').value;
 
-    const { data: sessionData, error: authError } = await _supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-    });
+    try {
+        const response = await fetch("/sign-in", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-    if (authError) {
-        console.error("Error signing in: ", authError.message);
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail);
+        }
+
+        alert("Login Successful");
+        window.location.href = 'dashboardNew.html';
+    } catch (error) {
+        console.error("Error signing in: ", error.message);
         alert("Failed to sign in. Please check your credentials and try again.");
-        return;
     }
 
-    localStorage.setItem('supabaseSession', JSON.stringify(sessionData.session));
-    window.location.href = 'dashboardNew.html';
+    // const { data: sessionData, error: authError } = await _supabase.auth.signInWithPassword({
+    //     email: email,
+    //     password: password
+    // });
+
+    // if (authError) {
+    //     console.error("Error signing in: ", authError.message);
+    //     alert("Failed to sign in. Please check your credentials and try again.");
+    //     return;
+    // }
+
+    // localStorage.setItem('supabaseSession', JSON.stringify(sessionData.session));
+    // window.location.href = 'dashboardNew.html';
 })
