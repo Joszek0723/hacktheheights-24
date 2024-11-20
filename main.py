@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
-from fastapi import FastAPI, HTTPException, Request, Depends
-from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from supabase import create_client, Client
 from fastapi.middleware.cors import CORSMiddleware
@@ -43,80 +43,121 @@ async def test_endpoint():
 
 @app.post("/sign-in")
 async def sign_in(credentials: SignInRequest):
-    auth_response = supabase.auth.sign_in_with_password({
-        "email": credentials.email,
-        "password": credentials.password
-    })
+    try:
+        auth_response = supabase.auth.sign_in_with_password({
+            "email": credentials.email,
+            "password": credentials.password
+        })
 
-    if not auth_response.session:
-            raise HTTPException(status_code=401, detail="Invalid credentials")
+        return JSONResponse(
+            content={
+                "user": {
+                    "id": auth_response.user.id,
+                    "email": auth_response.user.email
+                }, 
+                "session": {
+                    "access_token": auth_response.session.access_token,
+                    "refresh_token": auth_response.session.refresh_token,
+                    "token_type": auth_response.session.token_type
+                }
+            },
+            status_code=200
+        )
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    session = auth_response.session
+# @app.get("/verify-user")
+# async def verify_user(authorization: str = Header(None)):
+#     try:
+#         if not authorization or not authorization.startswith("Bearer "):
+#             raise HTTPException(status_code=401, detail="Unauthorized")
 
-    # set the token in an HTTP-only cookie
-    response = JSONResponse(content={"message": "Login sucessful"})
-    response.set_cookie(
-        key="access_token",
-        value=session.access_token,
-        httponly=True,
-        secure=True,
-        samesite="Strict"
-    )
-    return response
+#         jwt = authorization.split("Bearer ")[1]
+#         print(jwt)
+
+#         response = supabase.auth.get_user()
+#         print(response)
+
+#         if response.user is None:
+#             raise HTTPException(status_code=401, detail="Unauthorized")
+
+#         return {"user": response.user}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+# @app.get("/verify-user")
+# async def verify_user():
+#     try:
+#         response = supabase.auth.get_user()
+#         print(response)
+
+#         if response.user is None:
+#             raise HTTPException(status_code=401, detail="Unauthorized")
+
+#         return {"user": response.user}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/verify-user")
+async def verify_user(request: Request):
+    try:
+        # Parse the request body to get the access token
+        body = await request.json()
+        access_token = body['access_token']
+        print(access_token)
+
+        if not access_token:
+            raise HTTPException(status_code=400, detail="Access token is required")
+
+        # Use the access token to fetch the user
+        response = supabase.auth.get_user(access_token)
+        print(response.user)
+
+        if response.user is None:
+            raise HTTPException(status_code=401, detail="Unauthorized")
+
+        return {"user": response.user}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+    
+
+@app.post("/sign-out")
+async def sign_out():
+    try:
+        response = supabase.auth.sign_out()
+        print(response)
+        return {"message": "Successfully signed out"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error signing out: {str(e)}")
     
 @app.post("/sign-up")
-async def sign_up(user: SignUpRequest):
-    auth_response = supabase.auth.sign_up({
-        "email": user.email,
-        "password": user.password,
-    })
+async def sign_up(credentials: SignUpRequest):
+    try:
+        authresponse = supabase.auth.sign_up({
+            "email": credentials.email,
+            "password": credentials.password,
+            "options": {
+                "email_redirect_to": "http://127.0.0.1:8000/dashboardNew.html",
+            },
+        })
+
+        if authresponse.user is None:
+            raise HTTPException(status_code=400, detail="Sign up failed.")
+
+        db_response = supabase.table("users").insert({
+            "email": credentials.email,
+            "name": credentials.name,
+            "role": "buyer",
+        }).execute()
+
+        if db_response.data is None:
+            raise HTTPException(status_code=500, detail="Failed to create user in the database.")
      
-    #  session = auth_response.session
-    if auth_response.user is None:
-        raise HTTPException(status_code=400, detail="Sign up failed.")
-     
-    # insert the user into the users table
-    db_response = supabase.table("users").insert({
-        "email": user.email,
-        "name": user.name,
-        "role": "buyer"
-    }).execute()
+        response = JSONResponse(content={"message": "Sign up successful! Please verify your email."})
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
-    if db_response.data is None:
-        raise HTTPException(status_code=500, detail="Failed to create user in the database.")
-     
-    response = JSONResponse(content={"message": "Sign up successful! Please verify your email."})
-    #  response.set_cookie(
-    #       key="access_token",
-    #       value=session.access_token,
-    #       httponly=True,
-    #       secure=True,
-    #       samesite="Strict"
-    #  )
-    return response
-
-@app.get("/email-confirmation")
-async def email_confirmation(request: Request):
-    print("HELLLLLLLOOOOOOOOOOOOOO")
-    access_token = request.query_params.get("acess_token")
-
-    if not access_token:
-        raise HTTPException(status_code=400, detail="Missing access token.")
-    
-    auth_response = supabase.auth.get_user(access_token)
-
-    if not auth_response.user:
-        raise HTTPException(status_code=401, detail="Invalid or expired access token.")
-    
-    response = RedirectResponse(url="/dashboardNew.html")
-    response.set_cookie(
-        key="access_token",
-        value=access_token,
-        httponly=True,
-        secure=True,
-        samesite="Strict"
-    )
-
-    return response
 
 app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
+
