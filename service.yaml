@@ -1,0 +1,12 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: paradise-service
+spec:
+  template:
+    spec:
+      containers:
+        - image: us-east1-docker.pkg.dev/this-is-paradise/paradise/paradise:latest
+          env:
+          ports:
+            - containerPort: 8080
