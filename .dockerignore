@@ -1,0 +1,20 @@
+# Exclude virtual environment
+venv/
+
+# Exclude Python cache
+__pycache__/
+*.py[cod]
+
+# Exclude devcontainer files
+.devcontainer/
+
+# Exclude environment file (if secrets shouldn't be in the container)
+.env
+
+# Exclude other unnecessary files
+*.log
+*.tmp
+*.swp
+
+# Exclude Git metadata
+.git/
