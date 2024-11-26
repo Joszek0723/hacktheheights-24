@@ -138,7 +138,7 @@ async def sign_up(credentials: SignUpRequest):
             "email": credentials.email,
             "password": credentials.password,
             "options": {
-                "email_redirect_to": "http://127.0.0.1:8000/dashboardNew.html",
+                "email_redirect_to": "https://paradise-service-90614761890.us-east1.run.app/dashboardNew.html",
             },
         })
 
