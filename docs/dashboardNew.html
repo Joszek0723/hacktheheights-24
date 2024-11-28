@@ -4,10 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="dashboardNew.css">
 </head>
 <body>
-    <h1 id="welcomeMessage">Loading...</h1>
-    <button id="sign-out">Sign Out</button>
+    <div id="mainContent">
+        <h1 id="welcomeMessage">Loading...</h1>
+        <button id="sign-out">Sign Out</button>
+        <button id="create-listing">Create a Listing</button>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-header">
+            <button id="close-popup"><i class="fa-solid fa-x"></i></button>
+        </div>
+        <div class="popup-content">
+            <h2>Create a Listing</h2>
+            <label for="category">Category:</label>
+            <select id="category">
+                <option value="">Select a Category</option>
+                <option value="event-tickets">Event Tickets</option>
+                <option value="dorm-essentials">Dorm Essentials</option>
+                <option value="registration-slots">Registration Slots</option>
+                <option value="miscellaneous">Miscellaneous</option>
+            </select>
+
+            <!-- Event Tickets Specific Fields -->
+            <div id="event-tickets-fields" style="display: none; margin-top: 15px;">
+                <label for="event-name">Event:</label>
+                <input type="text" id="event-name" placeholder="Enter event name">
+            
+                <label for="event-date">Date:</label>
+                <input type="datetime-local" id="event-date">
+            
+                <label for="number-of-tickets">Number of Tickets:</label>
+                <input type="number" id="number-of-tickets" min="1" placeholder="Enter number of tickets">
+            
+                <label for="price">Price:</label>
+                <input type="number" id="price" min="0.00" step="0.01" placeholder="Enter price per ticket">
+            
+                <label for="venue">Venue:</label>
+                <input type="text" id="venue" placeholder="Enter venue">
+            
+                <!-- New Submit Button -->
+                <button id="submit-listing">Submit Listing</button>
+            </div>            
+        </div>
+    </div>
 
     <!-- Link to the dashboard JavaScript file -->
     <script type="module" src="dashboardNew.js"></script>

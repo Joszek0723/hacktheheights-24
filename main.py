@@ -32,6 +32,13 @@ class SignInRequest(BaseModel):
     email: str
     password: str
 
+class EventListing(BaseModel):
+    title: str
+    event_date: str  # ISO format (e.g., "2024-12-15T19:30:00")
+    number_of_tickets: int
+    price: float
+    venue: str
+
 @app.get("/")
 async def root():
     return FileResponse("docs/index.html")
@@ -66,38 +73,6 @@ async def sign_in(credentials: SignInRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-# @app.get("/verify-user")
-# async def verify_user(authorization: str = Header(None)):
-#     try:
-#         if not authorization or not authorization.startswith("Bearer "):
-#             raise HTTPException(status_code=401, detail="Unauthorized")
-
-#         jwt = authorization.split("Bearer ")[1]
-#         print(jwt)
-
-#         response = supabase.auth.get_user()
-#         print(response)
-
-#         if response.user is None:
-#             raise HTTPException(status_code=401, detail="Unauthorized")
-
-#         return {"user": response.user}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-# @app.get("/verify-user")
-# async def verify_user():
-#     try:
-#         response = supabase.auth.get_user()
-#         print(response)
-
-#         if response.user is None:
-#             raise HTTPException(status_code=401, detail="Unauthorized")
-
-#         return {"user": response.user}
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
 @app.post("/verify-user")
 async def verify_user(request: Request):
     try:
@@ -119,8 +94,6 @@ async def verify_user(request: Request):
         return {"user": response.user}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-    
 
 @app.post("/sign-out")
 async def sign_out():
@@ -147,8 +120,7 @@ async def sign_up(credentials: SignUpRequest):
 
         db_response = supabase.table("users").insert({
             "email": credentials.email,
-            "name": credentials.name,
-            "role": "buyer",
+            "name": credentials.name
         }).execute()
 
         if db_response.data is None:
@@ -157,7 +129,24 @@ async def sign_up(credentials: SignUpRequest):
         response = JSONResponse(content={"message": "Sign up successful! Please verify your email."})
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+
+@app.post("/create-event-listing")
+async def create_event_listing(listing: EventListing):
+    try:
+        # Insert the listing into the database
+        response = supabase.table("event_listings").insert({
+            "title": listing.title,
+            "event_date": listing.event_date,
+            "number_of_tickets": listing.number_of_tickets,
+            "price": listing.price,
+            "venue": listing.venue,
+            # Use the `auth.uid()` function if users are authenticated
+            # "posted_by": auth.uid()
+        }).execute()
+        return {"message": "Event listing created successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
-

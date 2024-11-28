@@ -1,0 +1,59 @@
+/* Styling for the popup */
+.popup {
+    position: fixed;
+    top: 50%; /* Keep the popup vertically centered */
+    left: 50%;
+    transform: translate(-50%, 0%); /* Center the popup relative to the screen */
+    height: 500px;
+    width: 80%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+    position: relative; /* Ensure the close button is positioned within the popup */
+    box-sizing: border-box; /* Include padding in size calculations */
+}
+
+/* Ensure the popup expands from the center, maintaining the top position */
+.popup.visible {
+    display: flex;
+}
+
+/* Position the close button in the top-right corner of the popup */
+.popup-header {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.popup-header button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.popup-header button:hover {
+    transform: scale(1.1);
+    background: #f0f0f0;
+}
+
+/* Blur effect for the background */
+.blur {
+    filter: blur(5px);
+    pointer-events: none;
+}
