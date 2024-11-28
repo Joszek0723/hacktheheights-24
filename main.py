@@ -130,7 +130,6 @@ async def sign_up(credentials: SignUpRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-
 @app.post("/create-event-listing")
 async def create_event_listing(listing: EventListing):
     try:
