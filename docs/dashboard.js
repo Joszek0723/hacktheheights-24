@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 authLink.textContent = 'Sign out';
                 // authLink.href = '#'; // Placeholder for sign-out logic
 
-                // Fetch user role from the custom 'users' table
-                fetchUserRole(user.email);
+                // // Fetch user role from the custom 'users' table
+                // fetchUserRole(user.email);
 
                 // Add sign-out logic
                 authLink.addEventListener('click', async (event) => {
@@ -75,45 +75,45 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const role = data.role;
-        const dashboardContent = document.getElementById('dashboardContent');
+        // const role = data.role;
+        // const dashboardContent = document.getElementById('dashboardContent');
 
-        if (role === 'seller') {
-            dashboardContent.innerHTML = `
-                <button id="postOfferingBtn">Post an offering</button>
-                <form id="sellerForm" style="display: none;">
-                    <!-- Seller fields go here -->
-                    <input type="text" placeholder="School" id="school" required>
-                    <input type="text" placeholder="Majors" id="majors" required>
-                    <input type="text" placeholder="Minors" id="minors">
-                    <input type="number" placeholder="Available Credits" id="available_credits" required>
-                    <input type="text" placeholder="Time Conflicts" id="time_conflicts" required>
-                    <input type="text" placeholder="Class Year" id="class_year" required>
-                    <input type="datetime-local" placeholder="Pick Time" id="pick_time" required>
-                    <button type="submit">Submit</button>
-                </form>
-            `;
-            document.getElementById('postOfferingBtn').addEventListener('click', () => {
-                document.getElementById('sellerForm').style.display = 'block';
-            });
-        } else if (role === 'buyer') {
-            dashboardContent.innerHTML = `
-                <button id="postRequestBtn">Post a request</button>
-                <form id="buyerForm" style="display: none;">
-                    <!-- Buyer fields go here -->
-                    <input type="text" placeholder="Course Code" id="course_code" required>
-                    <input type="text" placeholder="Course Title" id="title" required>
-                    <input type="text" placeholder="Section" id="section" required>
-                    <input type="text" placeholder="Time Slot" id="time_slot" required>
-                    <input type="number" placeholder="Credits" id="credits" required>
-                    <input type="text" placeholder="Restrictions" id="restrictions" required>
-                    <input type="text" placeholder="Class Year Restrictions" id="class_year_restrictions" required>
-                    <button type="submit">Submit</button>
-                </form>
-            `;
-            document.getElementById('postRequestBtn').addEventListener('click', () => {
-                document.getElementById('buyerForm').style.display = 'block';
-            });
-        }
+        // if (role === 'seller') {
+        //     dashboardContent.innerHTML = `
+        //         <button id="postOfferingBtn">Post an offering</button>
+        //         <form id="sellerForm" style="display: none;">
+        //             <!-- Seller fields go here -->
+        //             <input type="text" placeholder="School" id="school" required>
+        //             <input type="text" placeholder="Majors" id="majors" required>
+        //             <input type="text" placeholder="Minors" id="minors">
+        //             <input type="number" placeholder="Available Credits" id="available_credits" required>
+        //             <input type="text" placeholder="Time Conflicts" id="time_conflicts" required>
+        //             <input type="text" placeholder="Class Year" id="class_year" required>
+        //             <input type="datetime-local" placeholder="Pick Time" id="pick_time" required>
+        //             <button type="submit">Submit</button>
+        //         </form>
+        //     `;
+        //     document.getElementById('postOfferingBtn').addEventListener('click', () => {
+        //         document.getElementById('sellerForm').style.display = 'block';
+        //     });
+        // } else if (role === 'buyer') {
+        //     dashboardContent.innerHTML = `
+        //         <button id="postRequestBtn">Post a request</button>
+        //         <form id="buyerForm" style="display: none;">
+        //             <!-- Buyer fields go here -->
+        //             <input type="text" placeholder="Course Code" id="course_code" required>
+        //             <input type="text" placeholder="Course Title" id="title" required>
+        //             <input type="text" placeholder="Section" id="section" required>
+        //             <input type="text" placeholder="Time Slot" id="time_slot" required>
+        //             <input type="number" placeholder="Credits" id="credits" required>
+        //             <input type="text" placeholder="Restrictions" id="restrictions" required>
+        //             <input type="text" placeholder="Class Year Restrictions" id="class_year_restrictions" required>
+        //             <button type="submit">Submit</button>
+        //         </form>
+        //     `;
+        //     document.getElementById('postRequestBtn').addEventListener('click', () => {
+        //         document.getElementById('buyerForm').style.display = 'block';
+        //     });
+        // }
     }
 });
