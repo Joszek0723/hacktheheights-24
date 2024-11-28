@@ -148,4 +148,5 @@ async def create_event_listing(listing: EventListing):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+
 app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
