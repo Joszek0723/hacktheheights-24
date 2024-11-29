@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!jwt) {
         titleElement.textContent = "Not signed in";
-        window.location.href = 'index.html';
+        // window.location.href = 'index.html';
         return;
     }
 
@@ -143,7 +143,7 @@ async function verifyUser(jwt) {
 // Redirect to the sign-in page
 function redirectToSignIn(titleElement) {
     titleElement.innerHTML = "Not signed in";
-    window.location.href = 'index.html';
+    // window.location.href = 'index.html';
 }
 
 // Show the popup and blur the background
