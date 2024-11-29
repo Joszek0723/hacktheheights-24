@@ -74,7 +74,7 @@ async def sign_in(credentials: SignInRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/verify-user")
-async def verify_user(request: Request, authorization: str = Header(...)):
+async def verify_user(authorization: str = Header(...)):
     try:
         if not authorization.startswith("Bearer "):
             raise HTTPException(status_code=401, detail="Invalid authorization header format.")
@@ -150,7 +150,5 @@ async def create_event_listing(listing: EventListing, authorization: str = Heade
         return {"message": "Event listing created successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
 
 app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
