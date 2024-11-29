@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (!jwt) {
         titleElement.textContent = "Not signed in";
-        window.location.href = 'index.html';
+        // window.location.href = 'index.html';
         return;
     }
 
@@ -74,10 +74,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Send POST request to FastAPI backend
         try {
+            console.log("JWT TOKEN IS: ", jwt)
             const response = await fetch("/create-event-listing", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${jwt}`,
                 },
                 body: JSON.stringify(payload),
             });
@@ -141,7 +143,7 @@ async function verifyUser(jwt) {
 // Redirect to the sign-in page
 function redirectToSignIn(titleElement) {
     titleElement.innerHTML = "Not signed in";
-    window.location.href = 'index.html';
+    // window.location.href = 'index.html';
 }
 
 // Show the popup and blur the background
