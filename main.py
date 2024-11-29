@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 import os
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Header
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from supabase import create_client, Client
@@ -79,7 +79,6 @@ async def verify_user(request: Request):
         # Parse the request body to get the access token
         body = await request.json()
         access_token = body['access_token']
-        print(access_token)
 
         if not access_token:
             raise HTTPException(status_code=400, detail="Access token is required")
@@ -99,7 +98,6 @@ async def verify_user(request: Request):
 async def sign_out():
     try:
         response = supabase.auth.sign_out()
-        print(response)
         return {"message": "Successfully signed out"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error signing out: {str(e)}")
@@ -131,8 +129,17 @@ async def sign_up(credentials: SignUpRequest):
         raise HTTPException(status_code=400, detail=str(e))
     
 @app.post("/create-event-listing")
-async def create_event_listing(listing: EventListing):
+async def create_event_listing(listing: EventListing, authorization: str = Header(...)):
     try:
+         # Extract JWT from Authorization header
+        if not authorization.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Invalid authorization header format.")
+
+        access_token = authorization.split(" ")[1]  # Get the JWT after "Bearer"
+
+        sub = supabase.auth.get_user(access_token).user.user_metadata
+        print("SUB: ", sub)
+
         # Insert the listing into the database
         response = supabase.table("event_listings").insert({
             "title": listing.title,
