@@ -9,10 +9,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const submitListingButton = document.getElementById("submit-listing");
 
     let jwt = retrieveJWT();
+    console.log("RETRIVED JWT IS: ", jwt);
 
     if (!jwt) {
         titleElement.textContent = "Not signed in";
-        // window.location.href = 'index.html';
+        window.location.href = 'index.html';
         return;
     }
 
@@ -74,7 +75,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Send POST request to FastAPI backend
         try {
-            console.log("JWT TOKEN IS: ", jwt)
             const response = await fetch("/create-event-listing", {
                 method: "POST",
                 headers: {
@@ -128,8 +128,8 @@ async function verifyUser(jwt) {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${jwt}`,
         },
-        body: JSON.stringify({ access_token: jwt }),
     });
 
     if (!response.ok) {
@@ -143,7 +143,7 @@ async function verifyUser(jwt) {
 // Redirect to the sign-in page
 function redirectToSignIn(titleElement) {
     titleElement.innerHTML = "Not signed in";
-    // window.location.href = 'index.html';
+    window.location.href = 'index.html';
 }
 
 // Show the popup and blur the background
