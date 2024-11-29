@@ -34,7 +34,7 @@ class SignInRequest(BaseModel):
 
 class EventListing(BaseModel):
     title: str
-    event_date: str  # ISO format (e.g., "2024-12-15T19:30:00")
+    event_date: str
     number_of_tickets: int
     price: float
     venue: str
@@ -74,22 +74,22 @@ async def sign_in(credentials: SignInRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/verify-user")
-async def verify_user(request: Request):
+async def verify_user(request: Request, authorization: str = Header(...)):
     try:
-        # Parse the request body to get the access token
-        body = await request.json()
-        access_token = body['access_token']
-
-        if not access_token:
-            raise HTTPException(status_code=400, detail="Access token is required")
-
-        # Use the access token to fetch the user
+        if not authorization.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Invalid authorization header format.")
+        access_token = authorization.split(" ")[1]
         response = supabase.auth.get_user(access_token)
-        print(response.user)
-
         if response.user is None:
             raise HTTPException(status_code=401, detail="Unauthorized")
-
+        sub = response.user.user_metadata['sub']
+        email = response.user.user_metadata['email']
+        user_query = supabase.table("users").select("*").eq("email", email).execute()
+        if not user_query.data:
+            raise HTTPException(status_code=404, detail="User not found in the database.")
+        user_data = user_query.data[0]
+        if not user_data.get("supabase_auth_id"):
+            supabase.table("users").update({"supabase_auth_id": sub}).eq("email", email).execute()
         return {"user": response.user}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -135,20 +135,17 @@ async def create_event_listing(listing: EventListing, authorization: str = Heade
         if not authorization.startswith("Bearer "):
             raise HTTPException(status_code=401, detail="Invalid authorization header format.")
 
-        access_token = authorization.split(" ")[1]  # Get the JWT after "Bearer"
+        access_token = authorization.split(" ")[1]
 
-        sub = supabase.auth.get_user(access_token).user.user_metadata
-        print("SUB: ", sub)
+        sub = supabase.auth.get_user(access_token).user.user_metadata['sub']
 
-        # Insert the listing into the database
         response = supabase.table("event_listings").insert({
             "title": listing.title,
             "event_date": listing.event_date,
             "number_of_tickets": listing.number_of_tickets,
             "price": listing.price,
             "venue": listing.venue,
-            # Use the `auth.uid()` function if users are authenticated
-            # "posted_by": auth.uid()
+            "posted_by": sub
         }).execute()
         return {"message": "Event listing created successfully."}
     except Exception as e:
