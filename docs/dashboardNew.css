@@ -3,7 +3,7 @@
     position: fixed;
     top: 50%; /* Keep the popup vertically centered */
     left: 50%;
-    transform: translate(-50%, 0%); /* Center the popup relative to the screen */
+    transform: translate(-50%, -50%); /* Center the popup relative to the screen */
     height: 500px;
     width: 80%;
     background: white;
@@ -56,4 +56,127 @@
 .blur {
     filter: blur(5px);
     pointer-events: none;
+}
+
+/* Trending Events Container */
+#trending-events {
+    margin-top: 20px;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+#trending-events h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Carousel Wrapper */
+.carousel-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.carousel-container {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+}
+
+.carousel-set {
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
+    justify-content: space-between;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-set:not(.active) {
+    display: none;
+}
+
+/* Event Card */
+.event-card {
+    width: 23%;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    position: relative;
+}
+
+.event-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.event-details {
+    padding: 10px;
+}
+
+.event-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.event-date {
+    font-size: 14px;
+    color: #bbb;
+}
+
+.event-details .fa-heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.event-details .fa-heart:hover {
+    transform: scale(1.1);
+    color: red;
+}
+
+/* Integrated Carousel Navigation */
+.carousel-navigation {
+    position: absolute;
+    top: -40px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-size: 14px;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-navigation .carousel-nav {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-navigation .carousel-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.carousel-navigation .carousel-indicator {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
 }
