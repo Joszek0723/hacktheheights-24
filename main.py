@@ -154,26 +154,13 @@ async def create_event_listing(listing: EventListing, authorization: str = Heade
 @app.get("/get-listings")
 async def get_listings():
     try:
-        query = """
-        SELECT
-            el.id,
-            el.title,
-            el.description
-            el.event_date,
-            el.number_of_tickets,
-            el.price,
-            el.venue,
-            el.posted_by
-            u.name AS poster_name,
-            el.created_at,
-            el.updated_at,
-            el.status
-        FROM event_listings el
-        JOIN users u ON el.posted_by = u.supabase_auth_id
-        """
+        response = supabase.rpc("get_event_listings").execute()
+        listings = response.data
 
-        response = supabase.rpc("exec_sql", {"sql": query}).execute()
-        print(response)
+        # Format the response as a dictionary
+        listings_dict = {listing["id"]: listing for listing in listings}
+
+        return {"listings": listings_dict}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
