@@ -21,80 +21,26 @@
             <div class="carousel-wrapper">
                 <div class="carousel-navigation">
                     <button class="carousel-nav prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
-                    <span class="carousel-indicator">1 of 2</span>
+                    <span class="carousel-indicator">1 of ~</span>
                     <button class="carousel-nav next"><i class="fa-solid fa-chevron-right"></i></button>
                 </div>
                 <div class="carousel-container">
-                    <div class="carousel-set active">
-                        <!-- Group 1 -->
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Heat at Celtics">
-                            <div class="event-details">
-                                <p class="event-title">Heat at Celtics</p>
-                                <p class="event-date">Dec 2</p>
-                                <i class="fa-solid fa-heart"></i>
+                    <script id="carousel-template" type="text/x-handlebars-template">
+                        {{#each sets}}
+                        <div class="carousel-set {{#if (eq @index ../currentIndex)}}active{{/if}}">
+                            {{#each this}}
+                            <div class="event-card">
+                                <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                                <div class="event-details">
+                                    <p class="event-title">{{title}}</p>
+                                    <p class="event-date">{{formatDate event_date}}</p>
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
                             </div>
+                            {{/each}}
                         </div>
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Penguins at Bruins">
-                            <div class="event-details">
-                                <p class="event-title">Penguins at Bruins</p>
-                                <p class="event-date">Nov 29</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Colts at Patriots">
-                            <div class="event-details">
-                                <p class="event-title">Colts at Patriots</p>
-                                <p class="event-date">Dec 1</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Pittsburgh at Boston College">
-                            <div class="event-details">
-                                <p class="event-title">Pittsburgh at Boston College</p>
-                                <p class="event-date">Nov 30</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-set">
-                        <!-- Group 2 -->
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Event 5">
-                            <div class="event-details">
-                                <p class="event-title">Event 5</p>
-                                <p class="event-date">Dec 3</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Event 6">
-                            <div class="event-details">
-                                <p class="event-title">Event 6</p>
-                                <p class="event-date">Dec 4</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Event 7">
-                            <div class="event-details">
-                                <p class="event-title">Event 7</p>
-                                <p class="event-date">Dec 5</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                        <div class="event-card">
-                            <img src="https://via.placeholder.com/300x200" alt="Event 8">
-                            <div class="event-details">
-                                <p class="event-title">Event 8</p>
-                                <p class="event-date">Dec 6</p>
-                                <i class="fa-solid fa-heart"></i>
-                            </div>
-                        </div>
-                    </div>
+                        {{/each}}
+                    </script>
                 </div>
             </div>
         </div>
@@ -140,6 +86,7 @@
 
     <!-- Link to the dashboard JavaScript file -->
     <script type="module" src="dashboardNew.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 </body>
 
 </html>

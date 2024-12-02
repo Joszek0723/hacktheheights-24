@@ -90,7 +90,7 @@
     flex-shrink: 0;
     width: 100%;
     justify-content: space-between;
-    transition: transform 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out;
 }
 
 .carousel-set:not(.active) {

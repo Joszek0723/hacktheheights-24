@@ -157,10 +157,7 @@ async def get_listings():
         response = supabase.rpc("get_event_listings").execute()
         listings = response.data
 
-        # Format the response as a dictionary
-        listings_dict = {listing["id"]: listing for listing in listings}
-
-        return {"listings": listings_dict}
+        return {"listings": listings}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
