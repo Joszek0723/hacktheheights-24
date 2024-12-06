@@ -49,6 +49,7 @@ function getDOMElements() {
         prevButton: document.querySelector(".carousel-nav.prev"),
         nextButton: document.querySelector(".carousel-nav.next"),
         indicator: document.querySelector(".carousel-indicator"),
+        carouselContainer: document.querySelector(".carousel-container"),
     };
 }
 
@@ -101,6 +102,17 @@ function handleUnauthenticatedUser(titleElement) {
     // Redirect logic can be added if required
 }
 
+function updateCarousel(elements) {
+    // const translateX = -currentIndex * 100;
+    // elements.carouselContainer.style.transform = `translateX(${translateX})`;
+    document.querySelectorAll(".carousel-set").forEach((set, index) => {
+        set.classList.toggle("active", index === currentIndex); 
+    });
+    elements.indicator.textContent = `${currentIndex + 1} of ${document.querySelectorAll(".carousel-set").length}`;
+    elements.prevButton.disabled = currentIndex === 0;
+    elements.nextButton.disabled = currentIndex === document.querySelectorAll(".carousel-set").length - 1;
+};
+
 /**
  * Handles authenticated user actions, including initializing the carousel and adding event listeners.
  * @param {object} elements - Object containing references to DOM elements.
@@ -109,29 +121,20 @@ function handleUnauthenticatedUser(titleElement) {
 async function handleAuthenticatedUser(elements, jwt) {
     elements.titleElement.textContent = "Signed in";
 
-    const updateCarousel = () => {
-        document.querySelectorAll(".carousel-set").forEach((set, index) => {
-            set.classList.toggle("active", index === currentIndex);
-        });
-        elements.indicator.textContent = `${currentIndex + 1} of ${document.querySelectorAll(".carousel-set").length}`;
-        elements.prevButton.disabled = currentIndex === 0;
-        elements.nextButton.disabled = currentIndex === document.querySelectorAll(".carousel-set").length - 1;
-    };
-
     await updateEventCards();
-    updateCarousel(); // Initialize carousel
+    updateCarousel(elements); // Initialize carousel
 
     elements.prevButton.addEventListener("click", () => {
         if (currentIndex > 0) {
             currentIndex--;
-            updateCarousel();
+            updateCarousel(elements);
         }
     });
 
     elements.nextButton.addEventListener("click", () => {
         if (currentIndex < document.querySelectorAll(".carousel-set").length - 1) {
             currentIndex++;
-            updateCarousel();
+            updateCarousel(elements);
         }
     });
 
@@ -148,7 +151,7 @@ async function handleAuthenticatedUser(elements, jwt) {
     });
 
     elements.submitListingButton.addEventListener("click", async () => {
-        await submitListing(jwt);
+        await submitListing(elements, jwt);
     });
 
     elements.signOutButton.addEventListener("click", signOut);
@@ -212,6 +215,7 @@ async function populateEventCards(listings) {
         sets: groupedListings,
         currentIndex,
     });
+    console.log(html);
 
     document.querySelector(".carousel-container").innerHTML = html;
 }
@@ -220,7 +224,7 @@ async function populateEventCards(listings) {
  * Submits a new event listing to the backend.
  * @param {string} jwt - The JWT token.
  */
-async function submitListing(jwt) {
+async function submitListing(elements, jwt) {
     const payload = gatherListingInputs();
     if (!payload) return;
 
@@ -241,6 +245,7 @@ async function submitListing(jwt) {
         alert("Event listing created successfully!");
         clearFields();
         await updateEventCards();
+        updateCarousel(elements);
     } catch (error) {
         console.error("Error creating event listing:", error);
         alert("An error occurred. Please try again.");
@@ -340,8 +345,4 @@ function closePopup(mainContent, popup) {
 Handlebars.registerHelper("formatDate", function (isoDate) {
     const options = { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "numeric" };
     return new Intl.DateTimeFormat("en-US", options).format(new Date(isoDate));
-});
-
-Handlebars.registerHelper("eq", function (a, b) {
-    return a === b;
 });
