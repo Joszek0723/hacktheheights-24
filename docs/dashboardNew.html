@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="dashboardNew.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -15,7 +19,17 @@
         <h1 id="welcomeMessage">Loading...</h1>
         <button id="sign-out">Sign Out</button>
         <button id="create-listing">Create a Listing</button>
-        <!-- Trending Events -->
+        <div class="greeting">
+            <h1 id="welcomeMessage"></h1>
+        </div>
+        <div class="search-bar">
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" class="search-input" placeholder="What are you looking for?">
+                <div class="separator"></div>
+                <button class="search-button">Search</button>
+            </div>
+        </div>
         <div id="trending-events">
             <h2>Trending Events</h2>
             <div class="carousel-wrapper">
@@ -27,7 +41,7 @@
                 <div class="carousel-container">
                     <script id="carousel-template" type="text/x-handlebars-template">
                         {{#each sets}}
-                        <div class="carousel-set {{#if (eq @index ../currentIndex)}}active{{/if}}">
+                        <div class="carousel-set">
                             {{#each this}}
                             <div class="event-card">
                                 <img src="https://via.placeholder.com/300x200" alt="{{title}}">
@@ -44,6 +58,7 @@
                 </div>
             </div>
         </div>
+        <img id="aura-png" src="imgs/aura.png" alt="Decorative SVG">
     </div>
 
     <div id="popup" class="popup">
