@@ -19,9 +19,11 @@
         <h1 id="welcomeMessage">Loading...</h1>
         <button id="sign-out">Sign Out</button>
         <button id="create-listing">Create a Listing</button>
-        <div class="greeting">
-            <h1 id="welcomeMessage"></h1>
-        </div>
+            <div class="greeting">
+                <script id="greeting-template" type="text/x-handlebars-template">
+                    <h1 id="greeting-message">Good {{time_of_day}}, {{name}}</h1>
+                </script>
+            </div>
         <div class="search-bar">
             <div class="search-container">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -31,7 +33,7 @@
             </div>
         </div>
         <div id="trending-events">
-            <h2>Trending Events</h2>
+            <h2>Trending</h2>
             <div class="carousel-wrapper">
                 <div class="carousel-navigation">
                     <button class="carousel-nav prev" disabled><i class="fa-solid fa-chevron-left"></i></button>
