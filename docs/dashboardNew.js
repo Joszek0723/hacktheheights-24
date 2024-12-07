@@ -1,6 +1,6 @@
-// Store the Handlebars template in a variable
-const source = document.getElementById("carousel-template").innerHTML;
-const template = Handlebars.compile(source);
+// Store the Handlebars templateCarousel in a variable
+const sourceCarousel = document.getElementById("carousel-template").innerHTML;
+const templateCarousel = Handlebars.compile(sourceCarousel);
 
 let currentIndex = 0;
 
@@ -71,12 +71,30 @@ function retrieveJWT() {
     return jwt;
 }
 
+function getTimeOfDay() {
+    const now = new Date();
+    const hour = now.getHours();
+
+    let timeOfDay;
+
+    if (hour < 12) {
+        timeOfDay = 'morning';
+    } else if (hour < 18) {
+        timeOfDay = 'afternoon';
+    } else {
+    timeOfDay = 'evening';
+    }
+    return timeOfDay
+}
+
 /**
  * Verifies user authentication by calling the backend with the JWT.
  * @param {string} jwt - The JWT token.
  * @returns {Promise<boolean>} True if the user is authenticated, otherwise false.
  */
 async function verifyUser(jwt) {
+    const sourceGreeting = document.getElementById("greeting-template").innerHTML;
+    const templateGreeting = Handlebars.compile(sourceGreeting);
     const response = await fetch("/verify-user", {
         method: "POST",
         headers: {
@@ -90,6 +108,12 @@ async function verifyUser(jwt) {
     }
 
     const data = await response.json();
+    console.log(data)
+    const htmlGreeting = templateGreeting({
+        name: data.name.split(" ")[0],
+        time_of_day: getTimeOfDay()
+    });
+    document.querySelector(".greeting").innerHTML = htmlGreeting;
     return data.user && data.user.role === "authenticated";
 }
 
@@ -103,8 +127,6 @@ function handleUnauthenticatedUser(titleElement) {
 }
 
 function updateCarousel(elements) {
-    // const translateX = -currentIndex * 100;
-    // elements.carouselContainer.style.transform = `translateX(${translateX})`;
     document.querySelectorAll(".carousel-set").forEach((set, index) => {
         set.classList.toggle("active", index === currentIndex); 
     });
@@ -211,13 +233,11 @@ async function populateEventCards(listings) {
 
     const groupedListings = groupEvents(listings, 4);
 
-    const html = template({
+    const htmlCarousel = templateCarousel({
         sets: groupedListings,
-        currentIndex,
     });
-    console.log(html);
 
-    document.querySelector(".carousel-container").innerHTML = html;
+    document.querySelector(".carousel-container").innerHTML = htmlCarousel;
 }
 
 /**

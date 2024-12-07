@@ -74,8 +74,11 @@
 }
 
 #trending-events h2 {
-    font-size: 24px;
+    font-size: 150%;
     margin-bottom: 15px;
+    text-align: left;
+    margin-left: 4%;
+    font-weight: normal;
 }
 
 /* Carousel Wrapper */
@@ -119,7 +122,7 @@
 
 .event-card img {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
 }
 
@@ -220,7 +223,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    margin: 5% 0;
     position: relative;
     z-index: 10;
 }
@@ -228,18 +231,20 @@
 .search-container {
     display: flex;
     align-items: center;
-    background-color: #f5f5f5;
+    /* background-color: #f2f0ef; */
     border-radius: 25px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    width: 400px;
-    height: 50px;
+    width: 600px;
+    height: 60px;
 }
 
 .search-icon {
     color: black;
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     padding: 0 15px;
+    background-color: #f2f0ef;
+    padding: 20px;
 }
 
 .search-input {
@@ -247,10 +252,14 @@
     border: none;
     outline: none;
     padding: 10px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-family: 'Montserrat', sans-serif;
     color: #333;
     background: none;
+    background-color: #f2f0ef;
+    padding: 20px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .search-input::placeholder {
@@ -270,15 +279,31 @@
     border: none;
     outline: none;
     padding: 10px 20px;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-family: 'Montserrat', sans-serif;
     cursor: pointer;
     background-color: #7f4be2;
-    color: #fff;
+    color: #f2f0ef;
     transition: background-color 0.3s ease;
     height: 100%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
 
 .search-button:hover {
     background-color: #6c43c9;
+}
+
+.greeting {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5% 0;
+}
+
+#greeting-message {
+    display: flex;
+    align-items: center;
+    color: #f2f0ef;
+    font-size: 350%;
 }

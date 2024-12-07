@@ -88,9 +88,10 @@ async def verify_user(authorization: str = Header(...)):
         if not user_query.data:
             raise HTTPException(status_code=404, detail="User not found in the database.")
         user_data = user_query.data[0]
+        print(user_data)
         if not user_data.get("supabase_auth_id"):
             supabase.table("users").update({"supabase_auth_id": sub}).eq("email", email).execute()
-        return {"user": response.user}
+        return {"user": response.user, "name": user_data["name"]}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
