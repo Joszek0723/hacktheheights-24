@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="imgs/favicon.png">
     <!-- Link to the external CSS file -->
     <link rel="stylesheet" href="dashboardNew.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,9 +17,30 @@
 
 <body>
     <div id="mainContent">
-        <h1 id="welcomeMessage">Loading...</h1>
-        <button id="sign-out">Sign Out</button>
-        <button id="create-listing">Create a Listing</button>
+        <!-- <h1 id="welcomeMessage">Loading...</h1> -->
+        <!-- <button id="sign-out">Sign Out</button> -->
+        <!-- <button id="create-listing">Create a Listing</button> -->
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="dashboardNew.html" class="logo-container">
+                    <img src="imgs/logo.png" alt="Logo" class="logo">
+                </a>
+            </div>
+            <div class="nav-right">
+                <a href="#" class="icon-container">
+                    <i class="fa-solid fa-bars icon"></i>
+                </a>
+                <div class="dropdown-container">
+                    <a href="#" class="icon-container user-icon">
+                        <i class="fa-solid fa-user icon"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a id="create-listing" class="dropdown-item">Dashboard</a>
+                        <a id="sign-out" class="dropdown-item">Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
             <div class="greeting">
                 <script id="greeting-template" type="text/x-handlebars-template">
                     <h1 id="greeting-message">Good {{time_of_day}}, {{name}}</h1>

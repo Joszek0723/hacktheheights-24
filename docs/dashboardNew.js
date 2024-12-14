@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Handle user authentication
     if (!jwt) {
-        handleUnauthenticatedUser(elements.titleElement);
+        handleUnauthenticatedUser();
         return;
     }
 
@@ -23,11 +23,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (isAuthenticated) {
             await handleAuthenticatedUser(elements, jwt);
         } else {
-            handleUnauthenticatedUser(elements.titleElement);
+            handleUnauthenticatedUser();
         }
     } catch (error) {
         console.error("Error verifying user:", error);
-        handleUnauthenticatedUser(elements.titleElement);
+        handleUnauthenticatedUser();
     }
 });
 
@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", async () => {
  */
 function getDOMElements() {
     return {
-        titleElement: document.getElementById("welcomeMessage"),
         mainContent: document.getElementById("mainContent"),
         popup: document.getElementById("popup"),
         closePopupButton: document.getElementById("close-popup"),
@@ -50,6 +49,8 @@ function getDOMElements() {
         nextButton: document.querySelector(".carousel-nav.next"),
         indicator: document.querySelector(".carousel-indicator"),
         carouselContainer: document.querySelector(".carousel-container"),
+        userIcon: document.querySelector('.user-icon'),
+        dropdownMenu: document.querySelector('.dropdown-menu'),
     };
 }
 
@@ -121,8 +122,8 @@ async function verifyUser(jwt) {
  * Handles the UI for unauthenticated users.
  * @param {HTMLElement} titleElement - Element to display the "not signed in" message.
  */
-function handleUnauthenticatedUser(titleElement) {
-    titleElement.textContent = "Not signed in";
+function handleUnauthenticatedUser() {
+    console.log("Not Signed In.");
     // Redirect logic can be added if required
 }
 
@@ -135,13 +136,28 @@ function updateCarousel(elements) {
     elements.nextButton.disabled = currentIndex === document.querySelectorAll(".carousel-set").length - 1;
 };
 
+function renderProfileDropdownMenu(elements) {
+    // Toggle dropdown on user icon click
+    elements.userIcon.addEventListener('click', (e) => {
+        e.preventDefault();
+        elements.dropdownMenu.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!elements.userIcon.contains(e.target) && !elements.dropdownMenu.contains(e.target)) {
+            elements.dropdownMenu.classList.remove('show');
+        }
+    });
+}
+
 /**
  * Handles authenticated user actions, including initializing the carousel and adding event listeners.
  * @param {object} elements - Object containing references to DOM elements.
  * @param {string} jwt - The JWT token for the user.
  */
 async function handleAuthenticatedUser(elements, jwt) {
-    elements.titleElement.textContent = "Signed in";
+    renderProfileDropdownMenu(elements);
 
     await updateEventCards();
     updateCarousel(elements); // Initialize carousel
