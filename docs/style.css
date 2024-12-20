@@ -32,12 +32,6 @@ header {
     font-weight: normal;
 }
 
-/* #logo {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-} */
-
 .logo-container {
     display: flex;
     align-items: center;
@@ -51,50 +45,30 @@ header {
     padding-top: 10px;
 }
 
-/* #logo-symbol {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-#logo-text {
-    font-size: 1.5rem;
-} */
-
 main h1 {
-    font-size: 5rem;
+    font-size: 4.5rem;
     line-height: 1.2;
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
+    margin-top: 5rem;
     font-weight: normal;
 }
 
 #login-signup-btn {
     background: #7f4be2;
     color: #f2f0ef;
-    font-size: 1.75rem;
+    font-size: 2rem;
     font-weight: normal;
     border: none;
-    padding: 10px 30px;
-    border-radius: 30px;
+    padding: 20px 80px;
+    border-radius: 50px;
     cursor: pointer;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
     transition: opactiy 0.3s ease;
     font-family: 'Montserrat', sans-serif;
 }
 
 #login-signup-btn:hover {
     opacity: 0.8;
-}
-
-#categories {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-}
-
-.category img {
-    width: 40px;
-    height: auto;
-    margin-bottom: 0.5rem;
 }
 
 #aura-png {
@@ -104,4 +78,63 @@ main h1 {
     height: auto;
     pointer-events: none;
     z-index: 1;
+}
+
+@keyframes slide {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.categories {
+    padding: 60px 0;
+    width: 40vw; /* Reduced width */
+    margin: 0 auto; /* Center the categories div horizontally */
+    background: rgba(0, 0, 0, 0.8);
+    white-space: nowrap;
+    position: relative;
+    border-radius: 10px; /* Optional for rounded edges */
+    display: flex; /* Ensure content inside aligns properly */
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+    overflow: hidden;
+}
+
+.categories::before,
+.categories::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5px; /* Width of the vertical line */
+    margin: 60px 0;
+    background: white;
+    border-radius: 50px; /* Makes the lines rounded */
+    content: "";
+    z-index: 2;
+}
+
+.categories::before {
+    left: 0; /* Position the left line */
+}
+
+.categories::after {
+    right: 0; /* Position the right line */
+}
+
+.categories-slide {
+    animation: 35s slide infinite linear;
+    display: flex;
+}
+
+.categories-slide img {
+    height: 100px;
+    margin: 0 40px;
+    flex-shrink: 0;
+}
+
+.categories:hover .categories-slide {
+    animation-play-state: paused;
 }
