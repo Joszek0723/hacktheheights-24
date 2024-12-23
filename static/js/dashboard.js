@@ -344,7 +344,7 @@ async function signOut() {
 
         if (response.ok) {
             localStorage.removeItem("access_token");
-            window.location.href = "landing.html";
+            window.location.href = "/";
         } else {
             console.error("Failed to sign out.");
         }
