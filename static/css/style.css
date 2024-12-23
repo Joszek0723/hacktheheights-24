@@ -133,6 +133,7 @@ main h1 {
     height: 100px;
     margin: 0 40px;
     flex-shrink: 0;
+    z-index: 10;
 }
 
 .categories:hover .categories-slide {

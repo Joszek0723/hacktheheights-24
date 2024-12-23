@@ -73,8 +73,7 @@ signInForm.addEventListener('submit', async function (event) {
         const data = await response.json();
         const token = data["session"]["access_token"];
         localStorage.setItem('access_token', token);
-        alert("Login Successful");
-        window.location.href = 'dashboardNew.html';
+        window.location.href = '/dashboard';
     } catch (error) {
         console.error("Error signing in: ", error.message);
         alert("Failed to sign in. Please check your credentials and try again.");

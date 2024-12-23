@@ -1,11 +1,12 @@
 from dotenv import load_dotenv
 import os
-from fastapi import FastAPI, HTTPException, Request, Header
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi import FastAPI, HTTPException, Header
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from supabase import create_client, Client
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import re
 
 app = FastAPI()
 
@@ -38,10 +39,6 @@ class EventListing(BaseModel):
     number_of_tickets: int
     price: float
     venue: str
-
-@app.get("/")
-async def root():
-    return FileResponse("docs/index.html")
 
 @app.get("/test")
 async def test_endpoint():
@@ -110,7 +107,7 @@ async def sign_up(credentials: SignUpRequest):
             "email": credentials.email,
             "password": credentials.password,
             "options": {
-                "email_redirect_to": "https://paradise-service-90614761890.us-east1.run.app/dashboardNew.html",
+                "email_redirect_to": "https://thehandel.co/dashboard",
             },
         })
 
@@ -163,4 +160,45 @@ async def get_listings():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
+# app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+# Directory where HTML files are stored
+HTML_DIR = "templates"  # Update to match your directory
+
+@app.get("/")
+async def root():
+    # Securely resolve the path to index.html
+    file_path = os.path.abspath(os.path.join(HTML_DIR, "index.html"))
+
+    # Ensure the resolved path stays within the HTML_DIR
+    if not file_path.startswith(os.path.abspath(HTML_DIR)):
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    # Check if index.html exists
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Page not found")
+
+    return FileResponse(file_path)
+
+@app.get("/index")
+@app.get("/index.html")
+async def redirect_to_root():
+    return RedirectResponse("/")
+
+@app.get("/{page_name}")
+async def serve_html(page_name: str):
+    # Validate page_name with a regex
+    if not re.match(r"^[a-zA-Z0-9_-]+$", page_name):
+        raise HTTPException(status_code=400, detail="Invalid page name")
+
+    # Resolve the path and ensure it is within the HTML_DIR
+    safe_path = os.path.abspath(os.path.join(HTML_DIR, f"{page_name}.html"))
+    if not safe_path.startswith(os.path.abspath(HTML_DIR)):
+        raise HTTPException(status_code=403, detail="Access denied")
+
+    # Check if the file exists
+    if not os.path.exists(safe_path):
+        raise HTTPException(status_code=404, detail="Page not found")
+
+    return FileResponse(safe_path)
