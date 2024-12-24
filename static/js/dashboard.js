@@ -124,6 +124,7 @@ async function verifyUser(jwt) {
  */
 function handleUnauthenticatedUser() {
     console.log("Not Signed In.");
+    window.location.href = "/";
     // Redirect logic can be added if required
 }
 
