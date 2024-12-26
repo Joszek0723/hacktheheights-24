@@ -127,6 +127,7 @@ main h1 {
 .categories-slide {
     animation: 35s slide infinite linear;
     display: flex;
+    z-index: 5;
 }
 
 .categories-slide img {

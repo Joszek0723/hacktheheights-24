@@ -1,3 +1,5 @@
+import { retrieveJWT, signOut } from "./helperFunctions.js";
+
 // Store the Handlebars templateCarousel in a variable
 const sourceCarousel = document.getElementById("carousel-template").innerHTML;
 const templateCarousel = Handlebars.compile(sourceCarousel);
@@ -55,40 +57,6 @@ function getDOMElements() {
 }
 
 /**
- * Retrieves the JWT token from localStorage or URL hash.
- * @returns {string | null} JWT token if available, otherwise null.
- */
-function retrieveJWT() {
-    let jwt = localStorage.getItem("access_token");
-    if (!jwt) {
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const tokenFromUrl = params.get("access_token");
-        if (tokenFromUrl) {
-            localStorage.setItem("access_token", tokenFromUrl);
-            jwt = tokenFromUrl;
-        }
-    }
-    return jwt;
-}
-
-function getTimeOfDay() {
-    const now = new Date();
-    const hour = now.getHours();
-
-    let timeOfDay;
-
-    if (hour < 12) {
-        timeOfDay = 'morning';
-    } else if (hour < 18) {
-        timeOfDay = 'afternoon';
-    } else {
-    timeOfDay = 'evening';
-    }
-    return timeOfDay
-}
-
-/**
  * Verifies user authentication by calling the backend with the JWT.
  * @param {string} jwt - The JWT token.
  * @returns {Promise<boolean>} True if the user is authenticated, otherwise false.
@@ -116,6 +84,22 @@ async function verifyUser(jwt) {
     });
     document.querySelector(".greeting").innerHTML = htmlGreeting;
     return data.user && data.user.role === "authenticated";
+}
+
+function getTimeOfDay() {
+    const now = new Date();
+    const hour = now.getHours();
+
+    let timeOfDay;
+
+    if (hour < 12) {
+        timeOfDay = 'morning';
+    } else if (hour < 18) {
+        timeOfDay = 'afternoon';
+    } else {
+    timeOfDay = 'evening';
+    }
+    return timeOfDay
 }
 
 /**
@@ -332,26 +316,6 @@ function clearFields() {
  */
 function toggleEventTicketsFields(dropdown, fields) {
     fields.style.display = dropdown.value === "event-tickets" ? "block" : "none";
-}
-
-/**
- * Signs out the user and redirects to the landing page.
- */
-async function signOut() {
-    try {
-        const response = await fetch("/sign-out", {
-            method: "POST",
-        });
-
-        if (response.ok) {
-            localStorage.removeItem("access_token");
-            window.location.href = "/";
-        } else {
-            console.error("Failed to sign out.");
-        }
-    } catch (error) {
-        console.error("Error signing out:", error);
-    }
 }
 
 /**
