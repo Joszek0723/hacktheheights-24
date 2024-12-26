@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handel Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="static/css/profile.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="nav-left">
+                <a href="/dashboard" class="logo-container">
+                    <img src="static/imgs/logo.png" alt="Logo" class="logo">
+                </a>
+            </div>
+            <div class="search-bar">
+                <div class="search-bar-wrapper">
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" class="search-input" placeholder="What are you looking for?">
+                        <div class="separator"></div>
+                        <button class="search-button">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="#" class="icon-container">
+                    <i class="fa-solid fa-bars icon"></i>
+                </a>
+                <div class="dropdown-container">
+                    <a class="icon-container user-icon">
+                        <i class="fa-solid fa-user icon"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/dashboard" id="create-listing" class="dropdown-item"><i class="fa fa-undo" aria-hidden="true"></i>
+                            Return</a>
+                        <a id="sign-out" class="dropdown-item"><i class="fas fa-sign-out"></i> Sign Out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <aside class="sidebar">
+            <div class="create-listing">
+                <h2>Create a Listing</h2>
+                <button>Tickets</button>
+                <button>Spaces</button>
+                <button>Items</button>
+                <button>Books</button>
+            </div>
+        </aside>
+        <main class="main">
+            <section class="my-listings">
+                <h2>My Listings</h2>
+                <div class="listings">
+                    <button class="nav-btn left">&#9664;</button>
+                    <div class="cards"></div>
+                    <button class="nav-btn right">&#9654;</button>
+                </div>
+            </section>
+            <section class="saved-listings">
+                <h2>Saved Listings</h2>
+                <div class="listings">
+                    <button class="nav-btn left">&#9664;</button>
+                    <div class="cards"></div>
+                    <button class="nav-btn right">&#9654;</button>
+                </div>
+            </section>
+        </main>
+        <aside class="inbox">
+            <h2>Inbox (2)</h2>
+            <div class="messages">
+                <div class="message">Josh G.<br><span>Purchased BC @ Rutgers</span></div>
+                <div class="message">Allison J.<br><span>Bought "The Communist Manifesto"</span></div>
+                <div class="message">Jared A.<br><span>Can you meet outside...</span></div>
+                <div class="message">Vladimir L.<br><span>Are you subletting...</span></div>
+                <div class="message">Kamala H.<br><span>I can go down to $15...</span></div>
+            </div>
+        </aside>
+    </div>
+    <script type="module" src="static/js/helperFunctions.js"></script>
+    <script type="module" src="static/js/profile.js"></script>
+</body>
+
+</html>
