@@ -260,15 +260,14 @@
     flex: 1;
     border: none;
     outline: none;
-    padding: 10px;
     font-size: 1.2rem;
     font-family: 'Montserrat', sans-serif;
     color: #333;
     background: none;
     background-color: #f2f0ef;
-    padding: 20px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    height: 100%;
 }
 
 .search-input::placeholder {
@@ -280,7 +279,7 @@
 .separator {
     width: 5px;
     height: 100%;
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /* Button Styles */
