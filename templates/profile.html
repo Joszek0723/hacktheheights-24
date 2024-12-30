@@ -38,23 +38,40 @@
                         <i class="fa-solid fa-user icon"></i>
                     </a>
                     <div class="dropdown-menu">
-                        <a href="/dashboard" id="create-listing" class="dropdown-item"><i class="fa fa-undo" aria-hidden="true"></i>
+                        <a href="/dashboard" id="create-listing" class="dropdown-item"><i class="fa fa-undo"
+                                aria-hidden="true"></i>
                             Return</a>
                         <a id="sign-out" class="dropdown-item"><i class="fas fa-sign-out"></i> Sign Out</a>
                     </div>
                 </div>
             </div>
         </header>
-        <aside class="sidebar">
-            <div class="create-listing">
-                <h2>Create a Listing</h2>
-                <button>Tickets</button>
-                <button>Spaces</button>
-                <button>Items</button>
-                <button>Books</button>
-            </div>
-        </aside>
         <main class="main">
+            <div class="tabs-container">
+                <div class="tabs">
+                    <div class="slider"></div>
+                    <button class="tab active">
+                        <i class="fas fa-save"></i>Saved Listings
+                    </button>
+                    <button class="tab">
+                        <i class="fa-solid fa-receipt"></i>History
+                    </button>
+                    <button class="tab">
+                        <i class="fa-solid fa-sliders"></i>Settings
+                    </button>
+                </div>
+                <div class="toggle-button-container">
+                    <button class="toggle-button" id="toggle-button">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <div class="dropdown-create-listing-menu" id="dropdown-create-listing-menu">
+                        <button class="dropdown-create-listing-item" id="top-dropdown-item"><i class="fa-solid fa-ticket-simple"></i></button>
+                        <button class="dropdown-create-listing-item"><i class="fa-solid fa-house-user"></i></button>
+                        <button class="dropdown-create-listing-item"><i class="fa-solid fa-couch"></i></button>
+                        <button class="dropdown-create-listing-item"><i class="fa-solid fa-book"></i></button>
+                    </div>
+                </div>
+            </div>
             <section class="my-listings">
                 <h2>My Listings</h2>
                 <div class="listings">
@@ -82,6 +99,9 @@
                 <div class="message">Kamala H.<br><span>I can go down to $15...</span></div>
             </div>
         </aside>
+        <button class="collapse-btn" id="collapse-btn">
+            <i class="fa fa-chevron-left"></i>
+        </button>
     </div>
     <script type="module" src="static/js/helperFunctions.js"></script>
     <script type="module" src="static/js/profile.js"></script>

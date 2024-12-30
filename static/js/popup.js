@@ -19,12 +19,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     registerBtn.addEventListener('click', () => {
         loginPopup.classList.add('active');
-        console.log("HELLO")
     });
 
     loginBtn.addEventListener('click', () => {
         loginPopup.classList.remove('active');
-        console.log("BYEE")
     });
 
     // Sign Up Functionality

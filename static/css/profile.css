@@ -8,11 +8,17 @@ body {
 .container {
     display: grid;
     grid-template-areas:
-        "header header header"
-        "sidebar main inbox";
-    grid-template-columns: 1fr 3fr 1fr;
+        "header header"
+        "main inbox";
+    grid-template-columns: 4fr 1fr;
     grid-template-rows: auto 1fr;
     height: 100vh;
+    overflow-x: hidden;
+    transition: grid-template-columns 1s ease; /* Smooth transition for grid columns */
+}
+
+.container.inbox-collapsed {
+    grid-template-columns: 1fr 0fr;
 }
 
 .header {
@@ -22,13 +28,8 @@ body {
     align-items: center;
     padding: 1rem;
     background-color: black;
-    border-bottom: 2px solid #f2f0ef;
+    border-bottom: 1px solid #f2f0ef;
 }
-
-/* .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-} */
 
 .nav-left {
     display: flex;
@@ -74,7 +75,7 @@ body {
     max-width: 350px; /* Limit the maximum width */
     height: 2.5rem; /* Use a smaller height */
 
-    transition: all 0.7s ease; /* Smooth animation */
+    transition: all 1s ease; /* Smooth animation */
     width: 2.5rem;
     background-color: transparent;
 }
@@ -86,7 +87,7 @@ body {
     /* background-color: #f2f0ef; */
     padding: 10px 10px 10px 10px;
 
-    transition: all 0.7s ease; /* Smooth animation */
+    transition: all 1s ease; /* Smooth animation */
 }
 
 /* Input and Button are hidden in collapsed mode */
@@ -95,7 +96,7 @@ body {
 .separator {
     opacity: 0;
     pointer-events: none; 
-    transition: opacity 0.7s ease; 
+    transition: opacity 1s ease; 
 }
 
 
@@ -170,14 +171,14 @@ body {
     cursor: pointer;
 }
 
-.sidebar {
+/* .sidebar {
     grid-area: sidebar;
     padding: 1rem;
     background-color: black;
-    border-right: 2px solid #f2f0ef;
-}
+    border-right: 1px solid #f2f0ef;
+} */
 
-.create-listing {
+/* .create-listing {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -203,11 +204,12 @@ body {
     color: white;
     cursor: pointer;
     border-radius: 5px;
-}
+} */
 
 .main {
     grid-area: main;
     padding: 1rem;
+    transition: grid-template-columns 1s ease;
 }
 
 .my-listings,
@@ -249,7 +251,14 @@ body {
     grid-area: inbox;
     padding: 1rem;
     background-color: black;
-    border-left: 2px solid #f2f0ef;
+    border-left: 1px solid #f2f0ef;
+    transition: transform 1s ease, width 1s ease, padding 1s ease;
+    transform: translateX(0); /* Initial position */
+    overflow: hidden;
+}
+
+.inbox.collapsed {
+    transform: translateX(100%);
 }
 
 .inbox h2 {
@@ -259,6 +268,49 @@ body {
 .messages .message {
     margin-bottom: 1rem;
 }
+
+/* Collapse button styles */
+.collapse-btn {
+    /* position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translateY(-50%);
+    background: #6c43c9;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    width: 20px;
+    height: 60px;
+    cursor: pointer;
+    transition: left 1s ease;
+    z-index: 10; */
+    position: absolute;
+    top: 50%;
+    left: calc(100% - 20px); /* Align with the inbox edge */
+    transform: translateY(-50%);
+    background: #6c43c9;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    width: 20px;
+    height: 60px;
+    cursor: pointer;
+    transition: left 0.5s ease, transform 0.5s ease; /* Smooth button position */
+    z-index: 10;
+}
+
+.collapse-btn i {
+    font-size: 12px;
+    transition: transform 1s ease;
+}
+
+.collapse-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+/* .main.full-width {
+    grid-column: 1 / -1;
+} */
 
 .nav-right {
     display: flex;
@@ -323,3 +375,150 @@ body {
 #sign-out i, #create-listing i {
     margin-right: 5%;
 }
+
+.tabs {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: #6c43c9; /* Purple background */
+    border-radius: 15px;
+    overflow: hidden;
+    height: 100%;
+    width: 45%;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: 2; /* Tabs stay on top of the slider */
+    transition: color 0.3s ease;
+    font-family: 'Montserrat', sans-serif;;
+  }
+  
+  .tab.active {
+    color: black;
+  }
+
+  .tab i {
+    margin-right: 7.5px;
+    font-size: 20px;
+  }
+  
+  .slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: calc((100% / 3) - 10px); /* Width of one tab */
+    background: #f2f0ef;
+    border-radius: 10px;
+    transition: transform 0.3s ease; /* Smooth sliding animation */
+    z-index: 1; /* Slider stays below the tabs */
+    height: 80%;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Add shadow effect */
+  }
+  
+  .tabs-container {
+    height: 7.5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    position: relative;
+  }
+
+  .toggle-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .toggle-button i {
+    font-size: 30px;
+    color: black;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+.toggle-button.active {
+    background-color: #6c43c9;
+    transform: rotate(45deg);
+    position: relative;
+    z-index: 2;
+}
+
+.toggle-button.active i {
+    color: #f2f0ef;
+}
+
+/* Container for the toggle button and dropdown */
+.toggle-button-container {
+    position: relative;
+    z-index: 2;
+  }
+  
+  /* Dropdown menu */
+  .dropdown-create-listing-menu {
+    position: absolute;
+    top: 47.5px; /* Distance from the toggle button */
+    left: -2.5px;
+    width: 55px; /* Same width as the toggle button */
+    background-color: white;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none; /* Initially hidden */
+    overflow: hidden;
+    margin-top: -50px;
+    z-index: 1;
+  }
+
+  #top-dropdown-item {
+    margin-top: 50px;
+  }
+  
+  /* Dropdown items */
+  .dropdown-create-listing-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding-bottom: 50px;
+  }
+  
+  .dropdown-create-listing-item i {
+    font-size: 16px;
+    color: black;
+    margin-top: 50px;
+  }
+  
+  .dropdown-create-listing-item:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Show dropdown when active */
+  .toggle-button-container.active .dropdown-create-listing-menu {
+    display: block;
+  }
+  
