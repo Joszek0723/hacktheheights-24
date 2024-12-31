@@ -30,9 +30,6 @@
                 </div>
             </div>
             <div class="nav-right">
-                <a href="#" class="icon-container">
-                    <i class="fa-solid fa-bars icon"></i>
-                </a>
                 <div class="dropdown-container">
                     <a class="icon-container user-icon">
                         <i class="fa-solid fa-user icon"></i>
@@ -56,19 +53,18 @@
                     <button class="tab">
                         <i class="fa-solid fa-receipt"></i>History
                     </button>
-                    <button class="tab">
-                        <i class="fa-solid fa-sliders"></i>Settings
-                    </button>
                 </div>
                 <div class="toggle-button-container">
                     <button class="toggle-button" id="toggle-button">
                         <i class="fa fa-plus"></i>
                     </button>
                     <div class="dropdown-create-listing-menu" id="dropdown-create-listing-menu">
-                        <button class="dropdown-create-listing-item" id="top-dropdown-item"><i class="fa-solid fa-ticket-simple"></i></button>
+                        <button class="dropdown-create-listing-item" id="top-dropdown-item"><i
+                                class="fa-solid fa-ticket-simple"></i></button>
                         <button class="dropdown-create-listing-item"><i class="fa-solid fa-house-user"></i></button>
                         <button class="dropdown-create-listing-item"><i class="fa-solid fa-couch"></i></button>
-                        <button class="dropdown-create-listing-item"><i class="fa-solid fa-book"></i></button>
+                        <button class="dropdown-create-listing-item" id="bottom-dropdown-item"><i
+                                class="fa-solid fa-book"></i></button>
                     </div>
                 </div>
             </div>
@@ -88,20 +84,67 @@
                     <button class="nav-btn right">&#9654;</button>
                 </div>
             </section>
+            <img id="aura-png" src="static/imgs/aura.png" alt="Decorative SVG">
         </main>
         <aside class="inbox">
-            <h2>Inbox (2)</h2>
+            <button class="collapse-btn" id="collapse-btn">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+            <h2>
+                INBOX
+                <span class="icon-with-badge">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span class="badge">3</span>
+                </span>
+            </h2>
             <div class="messages">
-                <div class="message">Josh G.<br><span>Purchased BC @ Rutgers</span></div>
-                <div class="message">Allison J.<br><span>Bought "The Communist Manifesto"</span></div>
-                <div class="message">Jared A.<br><span>Can you meet outside...</span></div>
-                <div class="message">Vladimir L.<br><span>Are you subletting...</span></div>
-                <div class="message">Kamala H.<br><span>I can go down to $15...</span></div>
+                <div class="message-container">
+                    <button class="message-button">
+                        <img src="static/imgs/silhouette.jpg" alt="Allison J." class="profile-image" />
+                        <div class="text-container">
+                            <span class="sender-name">Joshua G.</span>
+                            <span class="message">Purchased BC @ Rutgers</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="message-container">
+                    <button class="message-button">
+                        <img src="static/imgs/silhouette.jpg" alt="Allison J." class="profile-image" />
+                        <div class="text-container">
+                            <span class="sender-name">Allison J.</span>
+                            <span class="message">Bought the "Communist Manifesto"</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="message-container">
+                    <button class="message-button">
+                        <img src="static/imgs/silhouette.jpg" alt="Allison J." class="profile-image" />
+                        <div class="text-container">
+                            <span class="sender-name">Jared A.</span>
+                            <span class="message">Can you meet outside</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="message-container">
+                    <button class="message-button">
+                        <img src="static/imgs/silhouette.jpg" alt="Allison J." class="profile-image" />
+                        <div class="text-container">
+                            <span class="sender-name">Vladimir L.</span>
+                            <span class="message">Are you subletting this apartment?</span>
+                        </div>
+                    </button>
+                </div>
+                <div class="message-container">
+                    <button class="message-button">
+                        <img src="static/imgs/silhouette.jpg" alt="Allison J." class="profile-image" />
+                        <div class="text-container">
+                            <span class="sender-name">Kamala H.</span>
+                            <span class="message">I can go down to $15</span>
+                        </div>
+                    </button>
+                </div>
             </div>
         </aside>
-        <button class="collapse-btn" id="collapse-btn">
-            <i class="fa fa-chevron-left"></i>
-        </button>
     </div>
     <script type="module" src="static/js/helperFunctions.js"></script>
     <script type="module" src="static/js/profile.js"></script>
