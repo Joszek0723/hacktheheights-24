@@ -51,17 +51,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     const container = document.querySelector('.container');
 
     container.addEventListener('transitionend', (e) => {
-        // Ensure the event is related to the inbox transition
-        if (e.target.classList.contains('inbox')) {
-          handleResize(); // recalc the slider
+        // Check if the transition ended on the container’s grid-template-columns
+        if (e.target === container && e.propertyName === 'grid-template-columns') {
+            handleResize(); // recalc the slider
         }
-      });
+    });
 
     // Add click event listener for collapsing/expanding the inbox
     collapseBtn.addEventListener('click', () => {
-        inbox.classList.toggle('collapsed');
-        collapseBtn.classList.toggle('expanded');
+        // inbox.classList.toggle('collapsed');
         container.classList.toggle('inbox-collapsed');
+        collapseBtn.classList.toggle('expanded');
     });
 
     const jwt = retrieveJWT()

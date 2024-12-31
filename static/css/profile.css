@@ -10,15 +10,16 @@ body {
     grid-template-areas:
         "header header"
         "main inbox";
-    grid-template-columns: 4fr 1fr;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr);
     grid-template-rows: auto 1fr;
     height: 100vh;
     overflow-x: hidden;
-    transition: grid-template-columns 1s ease; /* Smooth transition for grid columns */
+    transition: grid-template-columns 0.5s ease;
+    /* Smooth transition for grid columns */
 }
 
 .container.inbox-collapsed {
-    grid-template-columns: 1fr 0fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0fr);
 }
 
 .header {
@@ -37,6 +38,7 @@ body {
 }
 
 .logo-container {
+    margin-top: -5px;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -71,11 +73,15 @@ body {
     border-radius: 25px;
     /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
     overflow: hidden;
-    width: 50%; /* Use a percentage for better responsiveness */
-    max-width: 350px; /* Limit the maximum width */
-    height: 2.5rem; /* Use a smaller height */
+    width: 50%;
+    /* Use a percentage for better responsiveness */
+    max-width: 350px;
+    /* Limit the maximum width */
+    height: 2.5rem;
+    /* Use a smaller height */
 
-    transition: all 1s ease; /* Smooth animation */
+    transition: all 1s ease;
+    /* Smooth animation */
     width: 2.5rem;
     background-color: transparent;
 }
@@ -86,8 +92,8 @@ body {
     font-size: 25px;
     /* background-color: #f2f0ef; */
     padding: 10px 10px 10px 10px;
-
-    transition: all 1s ease; /* Smooth animation */
+    transition: all 1s ease;
+    /* Smooth animation */
 }
 
 /* Input and Button are hidden in collapsed mode */
@@ -95,18 +101,20 @@ body {
 .search-button,
 .separator {
     opacity: 0;
-    pointer-events: none; 
-    transition: opacity 1s ease; 
+    pointer-events: none;
+    transition: opacity 1s ease;
 }
 
 
 .search-bar-wrapper:hover .search-container {
-    width: 50%; /* Expand the search bar */
+    width: 50%;
+    /* Expand the search bar */
     max-width: 350px;
 }
 
 .search-bar-wrapper:hover .search-icon {
-    color: black; /* Change icon color */
+    color: black;
+    /* Change icon color */
     background-color: #f2f0ef;
 }
 
@@ -114,7 +122,8 @@ body {
 .search-bar-wrapper:hover .search-button,
 .search-bar-wrapper:hover .separator {
     opacity: 1;
-    pointer-events: auto; /* Enable interaction */
+    pointer-events: auto;
+    /* Enable interaction */
 }
 
 
@@ -146,7 +155,6 @@ body {
     background-color: rgba(0, 0, 0, 0);
 }
 
-/* Button Styles */
 .search-button {
     border: none;
     outline: none;
@@ -154,7 +162,7 @@ body {
     font-family: 'Montserrat', sans-serif;
     cursor: pointer;
     padding-right: 10px;
-    background-color: #7f4be2;
+    background-color: #6c43c9;
     color: #f2f0ef;
     transition: background-color 0.5s ease;
     height: 100%;
@@ -171,45 +179,22 @@ body {
     cursor: pointer;
 }
 
-/* .sidebar {
-    grid-area: sidebar;
-    padding: 1rem;
-    background-color: black;
-    border-right: 1px solid #f2f0ef;
-} */
-
-/* .create-listing {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center; 
-    text-align: center; 
-    gap: 10px; 
-}
-
-.create-listing h2 {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 500;
-}
-
-.create-listing button {
-    display: block;
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border: none;
-    background-color: #6a0dad;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-} */
-
 .main {
+    position: relative;
     grid-area: main;
     padding: 1rem;
-    transition: grid-template-columns 1s ease;
+}
+
+#aura-png {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Keep the image spanning the full width of .main */
+    height: auto;
+    /* Preserve aspect ratio */
+    z-index: 0;
+    /* Make sure it sits behind other content if desired */
 }
 
 .my-listings,
@@ -249,59 +234,140 @@ body {
 
 .inbox {
     grid-area: inbox;
-    padding: 1rem;
-    background-color: black;
+    position: relative;
+    background-color: #141414;
     border-left: 1px solid #f2f0ef;
-    transition: transform 1s ease, width 1s ease, padding 1s ease;
-    transform: translateX(0); /* Initial position */
-    overflow: hidden;
-}
-
-.inbox.collapsed {
-    transform: translateX(100%);
+    min-width: 0;
 }
 
 .inbox h2 {
-    font-size: 1.2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 1.75rem;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    margin: 0.75rem 0 0.75rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
 }
 
-.messages .message {
-    margin-bottom: 1rem;
+.icon-with-badge {
+    position: relative;
+    display: inline-block;
+    margin-top: 3px;
+}
+
+.badge {
+    position: absolute;
+    top: -3px;
+    right: -9px;
+    background-color: #6c43c9;
+    color: #f2f0ef;
+    border-radius: 50%;
+    padding: 3px 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.inbox i {
+    font-size: 2.5rem;
+}
+
+.messages {
+    display: block;
+    /* or flex, but then also min-width: 0 if it's a flex item */
+    width: 100%;
+    min-width: 0;
+}
+
+.message-container {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    /* padding: 1rem; */
+    border-top: 0.5px solid #f2f0ef;
+    /* text-overflow: ellipsis; */
+}
+
+.message-button {
+    /* padding: 1rem; */
+    padding: 0.75rem 1rem 0.75rem 1rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* flex-direction: column;
+    align-items: flex-start; */
+    text-align: left;
+    font-family: 'Montserrat', 'sans-serif';
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.1);
+    color: #f2f0ef;
+    box-sizing: border-box;
+}
+
+.profile-image {
+    width: 40px;
+    /* Fixed size for a neat circle */
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Crop the image instead of stretching it */
+    margin-right: 15px;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+    flex: 1;
+    min-width: 0;
+}
+
+.sender-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 3px;
+}
+
+.message {
+    font-weight: 300;
+    display: inline-block;
+    /* or block; just not inline */
+    width: 100%;
+    /* Fill parent width (parent needs a set width) */
+    white-space: nowrap;
+    /* Don’t break onto multiple lines */
+    overflow: hidden;
+    /* Clip any overflow */
+    text-overflow: ellipsis;
+    /* Show '...' at the cut point */
+    box-sizing: border-box;
 }
 
 /* Collapse button styles */
 .collapse-btn {
-    /* position: absolute;
-    top: 50%;
-    left: 80%;
-    transform: translateY(-50%);
-    background: #6c43c9;
-    color: white;
-    border: none;
-    border-radius: 0 5px 5px 0;
-    width: 20px;
-    height: 60px;
-    cursor: pointer;
-    transition: left 1s ease;
-    z-index: 10; */
     position: absolute;
     top: 50%;
-    left: calc(100% - 20px); /* Align with the inbox edge */
+    left: -26px;
+    /* Align with the inbox edge */
     transform: translateY(-50%);
     background: #6c43c9;
     color: white;
     border: none;
-    border-radius: 0 5px 5px 0;
-    width: 20px;
-    height: 60px;
+    border-radius: 10px 0 0 10px;
+    width: 25px;
+    height: 125px;
     cursor: pointer;
-    transition: left 0.5s ease, transform 0.5s ease; /* Smooth button position */
     z-index: 10;
 }
 
 .collapse-btn i {
-    font-size: 12px;
-    transition: transform 1s ease;
+    font-size: 22.5px;
+    transition: transform 0.5s ease;
 }
 
 .collapse-btn.expanded i {
@@ -363,7 +429,8 @@ body {
     display: block;
 }
 
-#sign-out, #create-listing {
+#sign-out,
+#create-listing {
     position: relative;
     z-index: 10;
 }
@@ -372,7 +439,8 @@ body {
     border-bottom: 1px solid black;
 }
 
-#sign-out i, #create-listing i {
+#sign-out i,
+#create-listing i {
     margin-right: 5%;
 }
 
@@ -381,14 +449,16 @@ body {
     position: relative;
     justify-content: center;
     align-items: center;
-    background-color: #6c43c9; /* Purple background */
+    background-color: #6c43c9;
+    /* Purple background */
     border-radius: 15px;
     overflow: hidden;
     height: 100%;
-    width: 45%;
-  }
-  
-  .tab {
+    width: 33%;
+    min-width: 375px;
+}
+
+.tab {
     flex: 1;
     padding: 10px 20px;
     text-align: center;
@@ -399,46 +469,51 @@ body {
     border: none;
     cursor: pointer;
     position: relative;
-    z-index: 2; /* Tabs stay on top of the slider */
+    z-index: 2;
+    /* Tabs stay on top of the slider */
     transition: color 0.3s ease;
-    font-family: 'Montserrat', sans-serif;;
-  }
-  
-  .tab.active {
-    color: black;
-  }
+    font-family: 'Montserrat', sans-serif;
+}
 
-  .tab i {
+.tab.active {
+    color: black;
+}
+
+.tab i {
     margin-right: 7.5px;
     font-size: 20px;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    width: calc((100% / 3) - 10px); /* Width of one tab */
+    width: calc((100% / 2) - 10px);
+    /* Width of one tab */
     background: #f2f0ef;
     border-radius: 10px;
-    transition: transform 0.3s ease; /* Smooth sliding animation */
-    z-index: 1; /* Slider stays below the tabs */
+    transition: transform 0.3s ease;
+    /* Smooth sliding animation */
+    z-index: 1;
+    /* Slider stays below the tabs */
     height: 80%;
     top: 50%;
     transform: translateY(-50%);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Add shadow effect */
-  }
-  
-  .tabs-container {
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    /* Add shadow effect */
+}
+
+.tabs-container {
     height: 7.5%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 10px 0;
     position: relative;
-  }
+}
 
-  .toggle-button {
+.toggle-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -449,13 +524,13 @@ body {
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-  }
+}
 
-  .toggle-button i {
+.toggle-button i {
     font-size: 30px;
     color: black;
     transition: transform 0.3s ease, color 0.3s ease;
-  }
+}
 
 .toggle-button.active {
     background-color: #6c43c9;
@@ -472,29 +547,36 @@ body {
 .toggle-button-container {
     position: relative;
     z-index: 2;
-  }
-  
-  /* Dropdown menu */
-  .dropdown-create-listing-menu {
+}
+
+/* Dropdown menu */
+.dropdown-create-listing-menu {
     position: absolute;
-    top: 47.5px; /* Distance from the toggle button */
+    top: 47.5px;
+    /* Distance from the toggle button */
     left: -2.5px;
-    width: 55px; /* Same width as the toggle button */
+    width: 55px;
+    /* Same width as the toggle button */
     background-color: white;
     border-radius: 50px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: none; /* Initially hidden */
+    display: none;
+    /* Initially hidden */
     overflow: hidden;
     margin-top: -50px;
     z-index: 1;
-  }
+}
 
-  #top-dropdown-item {
+#top-dropdown-item {
     margin-top: 50px;
-  }
-  
-  /* Dropdown items */
-  .dropdown-create-listing-item {
+}
+
+#bottom-dropdown-item {
+    margin-bottom: 10px;
+}
+
+/* Dropdown items */
+.dropdown-create-listing-item {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -505,20 +587,19 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     padding-bottom: 50px;
-  }
-  
-  .dropdown-create-listing-item i {
+}
+
+.dropdown-create-listing-item i {
     font-size: 16px;
     color: black;
     margin-top: 50px;
-  }
-  
-  .dropdown-create-listing-item:hover {
+}
+
+.dropdown-create-listing-item:hover {
     background-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Show dropdown when active */
-  .toggle-button-container.active .dropdown-create-listing-menu {
+}
+
+/* Show dropdown when active */
+.toggle-button-container.active .dropdown-create-listing-menu {
     display: block;
-  }
-  
+}
