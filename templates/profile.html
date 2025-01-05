@@ -47,10 +47,13 @@
             <div class="tabs-container">
                 <div class="tabs">
                     <div class="slider"></div>
-                    <button class="tab active">
+                    <button class="tab active" id="saved-listings-tab">
                         <i class="fas fa-save"></i>Saved Listings
                     </button>
-                    <button class="tab">
+                    <button class="tab" id="my-listings-tab">
+                        <i class="fa-regular fa-pen-to-square"></i>My Listings
+                    </button>
+                    <button class="tab" id="history-tab">
                         <i class="fa-solid fa-receipt"></i>History
                     </button>
                 </div>
@@ -68,22 +71,118 @@
                     </div>
                 </div>
             </div>
-            <section class="my-listings">
-                <h2>My Listings</h2>
-                <div class="listings">
-                    <button class="nav-btn left">&#9664;</button>
-                    <div class="cards"></div>
-                    <button class="nav-btn right">&#9654;</button>
+            <div class="carousel-container">
+            <!-- Include Handlebars.js -->
+            <script src="https://cdn.jsdelivr.net/npm/handlebars@4.7.7/dist/handlebars.min.js"></script>
+
+            <script id="carousel-template" type="text/x-handlebars-template">
+                <div class="carousel-padding"></div>
+                <div class="carousel-set">
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            <section class="saved-listings">
-                <h2>Saved Listings</h2>
-                <div class="listings">
-                    <button class="nav-btn left">&#9664;</button>
-                    <div class="cards"></div>
-                    <button class="nav-btn right">&#9654;</button>
+                <div class="carousel-set">
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
                 </div>
-            </section>
+                <div class="carousel-set">
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-card">
+                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <div class="event-details">
+                            <p class="event-title">title</p>
+                            <p class="event-date">formatDate event_date</p>
+                            <i class="fa-solid fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-padding"></div>
+            </script>
+            </div>
+            <div class="fade-overlay"></div>
             <img id="aura-png" src="static/imgs/aura.png" alt="Decorative SVG">
         </main>
         <aside class="inbox">
@@ -97,6 +196,10 @@
                     <span class="badge">3</span>
                 </span>
             </h2>
+            <!-- <div class="search-bar-inbox">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Filter Friends..." />
+            </div> -->
             <div class="messages">
                 <div class="message-container">
                     <button class="message-button">

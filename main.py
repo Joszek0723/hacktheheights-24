@@ -33,12 +33,22 @@ class SignInRequest(BaseModel):
     email: str
     password: str
 
-class EventListing(BaseModel):
+# class EventListing(BaseModel):
+#     title: str
+#     event_date: str
+#     number_of_tickets: int
+#     price: float
+#     venue: str
+
+# Pydantic model for input validation
+class Listing(BaseModel):
+    category: str
     title: str
-    event_date: str
-    number_of_tickets: int
     price: float
-    venue: str
+    event_date: str = None
+    venue: str = None
+    # more fields to be added
+
 
 @app.get("/test")
 async def test_endpoint():
@@ -126,35 +136,116 @@ async def sign_up(credentials: SignUpRequest):
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
     
-@app.post("/create-event-listing")
-async def create_event_listing(listing: EventListing, authorization: str = Header(...)):
+@app.post("/create-listing")
+async def create_listing(listing: Listing, authorization: str = Header(...)):
     try:
-         # Extract JWT from Authorization header
         if not authorization.startswith("Bearer "):
             raise HTTPException(status_code=401, detail="Invalid authorization header format.")
-
+        
         access_token = authorization.split(" ")[1]
+        user_metadate = supabase.auth.get_user(access_token).user.user_metadata
+        sub = user_metadate['sub']
 
-        sub = supabase.auth.get_user(access_token).user.user_metadata['sub']
-
-        response = supabase.table("event_listings").insert({
+        parent_insert_response = supabase.table("listings").insert({
             "title": listing.title,
-            "event_date": listing.event_date,
-            "number_of_tickets": listing.number_of_tickets,
             "price": listing.price,
-            "venue": listing.venue,
-            "posted_by": sub
+            "posted_by": sub,
+            "category": listing.category
         }).execute()
-        return {"message": "Event listing created successfully."}
+
+        if not parent_insert_response.data:
+            raise HTTPException(status_code=500, detail="Failed to insert into listings.")
+        parent_id = parent_insert_response.data[0]["id"]
+
+        if listing.category == "tickets":
+            supabase.table("tickets").insert({
+                "listing_id": parent_id,
+                "event_date": listing.event_date,
+                "venue": listing.venue
+            }).execute()
+        else:
+            raise HTTPException(status_code=400, detail="Invalid category specified.")
+        
+        return {"message": "Listing created successfully."}
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))        
+
+    
+# @app.post("/create-event-listing")
+# async def create_event_listing(listing: EventListing, authorization: str = Header(...)):
+#     try:
+#          # Extract JWT from Authorization header
+#         if not authorization.startswith("Bearer "):
+#             raise HTTPException(status_code=401, detail="Invalid authorization header format.")
+
+#         access_token = authorization.split(" ")[1]
+
+#         sub = supabase.auth.get_user(access_token).user.user_metadata['sub']
+
+#         response = supabase.table("event_listings").insert({
+#             "title": listing.title,
+#             "event_date": listing.event_date,
+#             "number_of_tickets": listing.number_of_tickets,
+#             "price": listing.price,
+#             "venue": listing.venue,
+#             "posted_by": sub
+#         }).execute()
+#         return {"message": "Event listing created successfully."}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+# @app.get("/get-listings")
+# async def get_listings():
+#     try:
+#         response = supabase.rpc("get_listings").execute()
+#         listings = response.data
+
+#         return {"listings": listings}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/get-listings")
 async def get_listings():
     try:
-        response = supabase.rpc("get_event_listings").execute()
-        listings = response.data
+        parent_listings = supabase.table("listings").select("*").execute().data
 
+        tickets = {ticket["listing_id"]: ticket for ticket in supabase.table("tickets").select("*").execute().data}
+        # books = {book["listing_id"]: book for book in supabase.table("books").select("*").execute().data}
+        # spaces = {space["listing_id"]: space for space in supabase.table("spaces").select("*").execute().data}
+        # items = {item["listing_id"]: item for item in supabase.table("items").select("*").execute().data}
+
+        users = {user["supabase_auth_id"]: user for user in supabase.table("users").select("supabase_auth_id, name").execute().data}
+
+        listings = []
+        for listing in parent_listings:
+            category = listing["category"]
+            category_data = None
+
+            if category == "tickets" and listing["id"] in tickets:
+                category_data = tickets[listing["id"]]
+            # elif category == "books" and listing["id"] in books:
+            #     category_data = books[listing["id"]]
+            # elif category == "spaces" and listing["id"] in spaces:
+            #     category_data = spaces[listing["id"]]
+            # elif category_data == "items" and listing["id"] in items:
+            #     category_data = items[listing["id"]]
+
+            # Attach poster details
+            poster = users.get(listing["posted_by"], {})
+            poster_name = poster.get("name", "Unknown")
+            poster_uuid = listing["posted_by"]
+
+            # Merge parent, category-specific, and poster data
+            combined_data = {
+                **listing,
+                **(category_data or {}),
+                "poster_uuid": poster_uuid,
+                "poster_name": poster_name
+            }
+            listings.append(combined_data)
         return {"listings": listings}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

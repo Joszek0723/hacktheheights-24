@@ -250,7 +250,7 @@ async function submitListing(elements, jwt) {
     if (!payload) return;
 
     try {
-        const response = await fetch("/create-event-listing", {
+        const response = await fetch("/create-listing", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -280,19 +280,19 @@ async function submitListing(elements, jwt) {
 function gatherListingInputs() {
     const eventName = document.getElementById("event-name").value;
     const eventDate = document.getElementById("event-date").value;
-    const numberOfTickets = document.getElementById("number-of-tickets").value;
+    // const numberOfTickets = document.getElementById("number-of-tickets").value;
     const price = document.getElementById("price").value;
     const venue = document.getElementById("venue").value;
 
-    if (!eventName || !eventDate || !numberOfTickets || !price || !venue) {
+    if (!eventName || !eventDate || !price || !venue) {
         alert("Please fill out all fields.");
         return null;
     }
 
     return {
+        category: "tickets",
         title: eventName,
         event_date: eventDate,
-        number_of_tickets: parseInt(numberOfTickets),
         price: parseFloat(price),
         venue: venue,
     };

@@ -14,6 +14,7 @@ body {
     grid-template-rows: auto 1fr;
     height: 100vh;
     overflow-x: hidden;
+    overflow-y: hidden;
     transition: grid-template-columns 0.5s ease;
     /* Smooth transition for grid columns */
 }
@@ -247,7 +248,7 @@ body {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
-    margin: 0.75rem 0 0.75rem 1rem;
+    margin: 2rem 0 2rem 1.25rem;
     display: inline-flex;
     align-items: center;
     gap: 1rem;
@@ -288,7 +289,7 @@ body {
     white-space: nowrap;
     overflow: hidden;
     /* padding: 1rem; */
-    border-top: 0.5px solid #f2f0ef;
+    border: none;
     /* text-overflow: ellipsis; */
 }
 
@@ -303,9 +304,18 @@ body {
     text-align: left;
     font-family: 'Montserrat', 'sans-serif';
     font-size: 1rem;
-    background: rgba(0, 0, 0, 0.1);
+    background: #141414;
     color: #f2f0ef;
     box-sizing: border-box;
+    border: none;
+    border-bottom-left-radius: 50px;
+    border-top-left-radius: 50px;
+    margin-left: 7.5px;
+}
+
+.message-button:hover {
+    /* A lighter (or slightly different) shade */
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .profile-image {
@@ -406,7 +416,7 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     overflow: hidden;
-    z-index: 10;
+    z-index: 60;
     min-width: 150px;
 }
 
@@ -451,11 +461,12 @@ body {
     align-items: center;
     background-color: #6c43c9;
     /* Purple background */
-    border-radius: 15px;
+    border-radius: 25px;
     overflow: hidden;
     height: 100%;
     width: 33%;
-    min-width: 375px;
+    min-width: 550px;
+    min-height: 50px;
 }
 
 .tab {
@@ -489,10 +500,10 @@ body {
     top: 0;
     left: 0;
     height: 100%;
-    width: calc((100% / 2) - 10px);
+    width: calc((100% / 3) - 10px);
     /* Width of one tab */
     background: #f2f0ef;
-    border-radius: 10px;
+    border-radius: 20px;
     transition: transform 0.3s ease;
     /* Smooth sliding animation */
     z-index: 1;
@@ -546,7 +557,7 @@ body {
 /* Container for the toggle button and dropdown */
 .toggle-button-container {
     position: relative;
-    z-index: 2;
+    z-index: 50;
 }
 
 /* Dropdown menu */
@@ -602,4 +613,180 @@ body {
 /* Show dropdown when active */
 .toggle-button-container.active .dropdown-create-listing-menu {
     display: block;
+}
+
+/* Container for the search bar */
+.search-bar-inbox {
+    display: flex;
+    /* Place icon and input side by side */
+    align-items: center;
+    /* Vertically center content */
+    background-color: black;
+    /* Dark background */
+    border: 1px solid #f2f0ef;
+    /* Subtle border */
+    border-radius: 10px;
+    /* Slightly rounded corners */
+    padding: 8px 12px;
+    /* Space around the icon & input */
+    box-sizing: border-box;
+    width: 80%;
+}
+
+/* The search icon */
+.search-bar-inbox i {
+    color: #f2f0ef;
+    /* Light gray icon color */
+    font-size: 1.2rem;
+    /* Adjust icon size */
+}
+
+/* The input field */
+.search-bar-inbox input {
+    background: none;
+    /* Transparent so it matches .search-bar color */
+    border: none;
+    /* Remove default input borders */
+    outline: none;
+    /* Remove outline on focus */
+    color: #f2f0ef;
+    /* Text color */
+    margin-left: 8px;
+    /* Space between icon and text */
+    flex: 1;
+    /* Let the input grow to fill remaining space */
+    font-family: 'Montserrat', 'sans-serif';
+}
+
+/* Optional: Change placeholder color in modern browsers */
+.search-bar-inbox input::placeholder {
+    color: #f2f0ef;
+    /* Dark placeholder text */
+    font-family: 'Montserrat', 'sans-serif';
+}
+
+
+.carousel-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+
+    overflow-y: auto;
+    /* Enables vertical scrolling for the container */
+    max-height: 80%;
+    height: 100%;
+    width: 90%;
+    /* Full width */
+    gap: 5%;
+    /* Spacing between rows */
+    /* padding: 1rem; */
+    background-color: rgba(0, 0, 0, 0);
+    /* Custom scrollbar color for modern browsers */
+    position: absolute;
+    bottom: 0;
+    z-index: 5;
+    margin-left: 2.5%;
+    /* top: 100%;
+    left: 50%; 
+    transform: translate(-50%, -100%); */
+}
+
+.carousel-padding {
+    height: 5%;
+    width: 100%;
+}
+
+.carousel-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+    border-radius: 10px;
+    margin-block: 57px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-image: -webkit-gradient(linear,
+            left bottom,
+            left top,
+            color-stop(0.44, rgb(136, 84, 201)),
+            color-stop(0.72, rgb(108, 67, 201)),
+            color-stop(0.86, rgb(76, 45, 147)));
+}
+
+.carousel-set {
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+/* Event Card */
+.event-card {
+    width: 22%;
+    margin: 0% 1.5%;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    text-align: left;
+    position: relative;
+    z-index: 10;
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.2);
+    /* border-radius: 16px; */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    /* -webkit-backdrop-filter: blur(5px); */
+    /* border: 1px solid rgba(255, 255, 255, 0.3); */
+}
+
+.event-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.event-details {
+    padding: 10px;
+}
+
+.event-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.event-date {
+    font-size: 14px;
+    color: #bbb;
+}
+
+.event-details .fa-heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.event-details .fa-heart:hover {
+    transform: scale(1.1);
+    color: red;
+}
+
+.fade-overlay {
+    position: absolute;
+    left: 0;
+    bottom: 75%;
+    width: 90%;
+    height: 5%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0) 0%, black 100%);
+    z-index: 10;
+    pointer-events: none;
+    margin-left: 2.5%;
 }

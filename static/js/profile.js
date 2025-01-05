@@ -110,6 +110,23 @@ async function handleAuthenticatedUser(jwt) {
         }
     });
 
+    const myListingsTab = document.getElementById("my-listings-tab");
+    const otherTabs = [document.getElementById("saved-listings-tab"), document.getElementById("history-tab")];
+    const carouselContainer = document.querySelector(".carousel-container");
+
+    const myListingsTemplateSource = document.getElementById("carousel-template").innerHTML;
+    const myListingsTemplate = Handlebars.compile(myListingsTemplateSource);
+
+    myListingsTab.addEventListener("click", () => {
+        carouselContainer.innerHTML = myListingsTemplate({});
+    });
+
+    otherTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            carouselContainer.innerHTML = "";
+        });
+    });
+
     document.getElementById("sign-out").addEventListener("click", signOut);
 }
 
