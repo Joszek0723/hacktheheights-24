@@ -1,4 +1,4 @@
-import { retrieveJWT, signOut } from "./helperFunctions.js";
+import { fetchListings, retrieveJWT, signOut } from "./helperFunctions.js";
 
 // Store the Handlebars templateCarousel in a variable
 const sourceCarousel = document.getElementById("carousel-template").innerHTML;
@@ -192,31 +192,6 @@ async function updateEventCards() {
         return;
     }
     await populateEventCards(listings);
-}
-
-/**
- * Fetches event listings from the backend.
- * @returns {object | null} Event listings or null if fetching fails.
- */
-async function fetchListings() {
-    try {
-        const response = await fetch("/get-listings", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch listings");
-        }
-
-        const data = await response.json();
-        return data.listings;
-    } catch (error) {
-        console.error("Error fetching listings:", error);
-        return null;
-    }
 }
 
 /**
