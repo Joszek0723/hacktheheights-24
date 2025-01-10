@@ -95,7 +95,6 @@ async def verify_user(authorization: str = Header(...)):
         if not user_query.data:
             raise HTTPException(status_code=404, detail="User not found in the database.")
         user_data = user_query.data[0]
-        print(user_data)
         if not user_data.get("supabase_auth_id"):
             supabase.table("users").update({"supabase_auth_id": sub}).eq("email", email).execute()
         return {"user": response.user, "name": user_data["name"]}
@@ -249,7 +248,41 @@ async def get_listings():
         return {"listings": listings}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/get-listings-by-user")
+async def get_listings_by_user(supabase_auth_id: str, user_name: str):
+    try:
+        parent_listings = supabase.table("listings").select("*").eq("posted_by", supabase_auth_id).execute().data
 
+        tickets = {ticket["listing_id"]: ticket for ticket in supabase.table("tickets").select("*").execute().data}
+        # books = {book["listing_id"]: book for book in supabase.table("books").select("*").execute().data}
+        # spaces = {space["listing_id"]: space for space in supabase.table("spaces").select("*").execute().data}
+        # items = {item["listing_id"]: item for item in supabase.table("items").select("*").execute().data}
+
+        listings = []
+        for listing in parent_listings:
+            category = listing["category"]
+            category_data = None
+
+            if category == "tickets" and listing["id"] in tickets:
+                category_data = tickets[listing["id"]]
+            # elif category == "books" and listing["id"] in books:
+            #     category_data = books[listing["id"]]
+            # elif category == "spaces" and listing["id"] in spaces:
+            #     category_data = spaces[listing["id"]]
+            # elif category_data == "items" and listing["id"] in items:
+            #     category_data = items[listing["id"]]
+
+            combined_data = {
+                **listing,
+                **category_data,
+                "poster_name": user_name,
+            }
+            listings.append(combined_data)
+
+        return {"listings": listings}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # app.mount("/", StaticFiles(directory="docs", html=True), name="docs") 
 app.mount("/static", StaticFiles(directory="static"), name="static")

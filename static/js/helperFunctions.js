@@ -36,3 +36,50 @@ export async function signOut() {
         console.error("Error signing out:", error);
     }
 }
+
+/**
+ * Fetches event listings from the backend.
+ * @returns {object | null} Event listings or null if fetching fails.
+ */
+export async function fetchListings() {
+    try {
+        const response = await fetch("/get-listings", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch listings");
+        }
+
+        const data = await response.json();
+        console.log(data.listings);
+        return data.listings;
+    } catch (error) {
+        console.error("Error fetching listings: ", error);
+        return null;
+    }
+}
+
+export async function fetchMyListings(supabaseAuthId, userName) {
+    try {
+        const response = await fetch(`/get-listings-by-user?supabase_auth_id=${encodeURIComponent(supabaseAuthId)}&user_name=${encodeURIComponent(userName)}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch my listings");
+        }
+
+        const data = await response.json();
+        return data.listings;
+    } catch (error) {
+        console.error("Error fetching my listings: ", error);
+        return null;
+    }
+}

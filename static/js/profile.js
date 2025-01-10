@@ -1,4 +1,4 @@
-import { retrieveJWT, signOut } from "./helperFunctions.js";
+import { fetchMyListings, retrieveJWT, signOut } from "./helperFunctions.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
     const tabs = document.querySelectorAll('.tab');
@@ -37,15 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Add resize event listener
     window.addEventListener('resize', handleResize);
 
-    const toggleButton = document.getElementById('toggle-button');
-    const toggleContainer = document.querySelector('.toggle-button-container');
-
-    toggleButton.addEventListener('click', () => {
-        toggleButton.classList.toggle('active');
-        toggleContainer.classList.toggle('active');
-    });
-
-    const inbox = document.querySelector('.inbox');
+    // const inbox = document.querySelector('.inbox');
     const collapseBtn = document.getElementById('collapse-btn');
     // const main = document.querySelector('.main');
     const container = document.querySelector('.container');
@@ -66,9 +58,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const jwt = retrieveJWT()
     try {
-        const isAuthenticated = await verifyUser(jwt);
+        const [isAuthenticated, userData] = await verifyUser(jwt);
         if (isAuthenticated) {
-            await handleAuthenticatedUser(jwt);
+            await handleAuthenticatedUser(userData);
         } else {
             handleUnauthenticatedUser();
         }
@@ -93,37 +85,148 @@ async function verifyUser(jwt) {
 
     const data = await response.json();
     console.log(data)
-    return data.user && data.user.role === "authenticated";
+    return [data.user && data.user.role === "authenticated", data];
 }
 
-async function handleAuthenticatedUser(jwt) {
-    console.log(jwt);
-    document.querySelector('.user-icon').addEventListener('click', (e) => {
+async function displayMyListings(supabaseAuthId, userName) {
+    console.log(supabaseAuthId, userName);
+    const myListings = await fetchMyListings(supabaseAuthId, userName);
+    if (!myListings) {
+        console.error("Failed to fetch listings");
+        return;
+    }
+    console.log(myListings);
+    return myListings;
+}
+
+function getDOMElements() {
+    return {
+        userIcon: document.querySelector(".user-icon"),
+        dropdownMenu: document.querySelector(".dropdown-menu"),
+        carouselContainer: document.querySelector(".carousel-container"),
+
+        savedListingsTab: document.getElementById("saved-listings-tab"),
+        myListingsTab: document.getElementById("my-listings-tab"),
+        historyTab: document.getElementById("history-tab"),
+
+        createTicketsListing: document.getElementById("create-tickets-listing"),
+        createSpacesListing: document.getElementById("create-spaces-listing"),
+        createItemsListing: document.getElementById("create-items-listing"),
+        createBooksListing: document.getElementById("create-books-listing"),
+
+        toggleButton: document.getElementById('toggle-button'),
+        toggleContainer: document.querySelector('.toggle-button-container'),
+        createTicketsListingButton: document.getElementById("create-tickets-listing"),
+    }
+}
+
+async function handleAuthenticatedUser(userData) {
+    const elements = getDOMElements();
+    const myListingsTemplateSource = document.getElementById("carousel-template").innerHTML;
+    const myListingsTemplate = Handlebars.compile(myListingsTemplateSource);
+    const createTicketsListingTemplateSource = document.getElementById("create-tickets-listing-template").innerHTML;
+    const createTicketsListingTemplate = Handlebars.compile(createTicketsListingTemplateSource);
+
+    elements.toggleButton.addEventListener('click', () => {
+        elements.toggleButton.classList.toggle('active');
+        elements.toggleContainer.classList.toggle('active');
+    });
+
+    elements.userIcon.addEventListener('click', (e) => {
         e.preventDefault();
-        document.querySelector('.dropdown-menu').classList.toggle('show');
+        elements.dropdownMenu.classList.toggle('show');
     });
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
-        if (!document.querySelector('.user-icon').contains(e.target) && !document.querySelector('.dropdown-menu').contains(e.target)) {
-            document.querySelector('.dropdown-menu').classList.remove('show');
+        if (!elements.userIcon.contains(e.target) && !elements.dropdownMenu.contains(e.target)) {
+            elements.dropdownMenu.classList.remove('show');
         }
     });
 
-    const myListingsTab = document.getElementById("my-listings-tab");
     const otherTabs = [document.getElementById("saved-listings-tab"), document.getElementById("history-tab")];
-    const carouselContainer = document.querySelector(".carousel-container");
 
-    const myListingsTemplateSource = document.getElementById("carousel-template").innerHTML;
-    const myListingsTemplate = Handlebars.compile(myListingsTemplateSource);
+    elements.myListingsTab.addEventListener("click", async () => {
+        const groupEvents = (events, groupSize) => {
+            const sets = [];
+            for (let i = 0; i < events.length; i += groupSize) {
+                sets.push(events.slice(i, i + groupSize));
+            }
+            return sets;
+        };
 
-    myListingsTab.addEventListener("click", () => {
-        carouselContainer.innerHTML = myListingsTemplate({});
+        const myListings = await displayMyListings(userData.user.id, userData.name);
+        const groupedMyListings = groupEvents(myListings, 4);
+        elements.carouselContainer.innerHTML = myListingsTemplate({
+            sets: groupedMyListings,
+        });
     });
+
+    elements.createTicketsListingButton.addEventListener("click", async () => {
+        elements.carouselContainer.innerHTML = createTicketsListingTemplate({});
+        elements.toggleButton.classList.toggle('active');
+        elements.toggleContainer.classList.toggle('active');
+        // 1) Reusable function for handling input updates
+        function attachInputListener({
+            inputField,
+            progressBar,
+            charCount,
+            status,
+            thresholds = [25, 50],    // Adjust thresholds as needed
+            fallbackProgress = 0.4,   // If progress is 0, use fallback
+        }) {
+            inputField.addEventListener("input", () => {
+                const maxLength = inputField.maxLength;
+                const currentLength = inputField.value.length;
+
+                // Calculate progress and handle "0" special case
+                const rawPercentage = (currentLength / maxLength) * 100;
+                const progressPercentage = rawPercentage === 0 ? fallbackProgress : rawPercentage;
+                progressBar.style.width = `${progressPercentage}%`;
+
+                // Update character count text
+                charCount.textContent = `${currentLength}/${maxLength}`;
+                if (currentLength < thresholds[0]) {
+                    status.textContent = "May be too brief.";
+                    status.style.color = "#ff4d4d";
+                    progressBar.style.backgroundColor = "#ff4d4d";
+                } else if (currentLength < thresholds[1]) {
+                    status.textContent = "Medium length.";
+                    status.style.color = "#ffb400";
+                    progressBar.style.backgroundColor = "#ffb400";
+                } else {
+                    status.textContent = "Ideal length.";
+                    status.style.color = "#4caf50";
+                    progressBar.style.backgroundColor = "#4caf50";
+                }
+            });
+        }
+
+        // 2) Attach for 'description' input
+        attachInputListener({
+            inputField: document.getElementById("description-input"),
+            progressBar: document.querySelector(".progress-bar"),
+            charCount: document.querySelector(".character-count"),
+            status: document.querySelector(".status"),
+            thresholds: [25, 50],   // for description
+            fallbackProgress: 0.4,
+        });
+
+        // 3) Attach for 'title' input
+        attachInputListener({
+            inputField: document.getElementById("title-input"),
+            progressBar: document.querySelector(".progress-bar-title"),
+            charCount: document.querySelector(".character-count-title"),
+            status: document.querySelector(".status-title"),
+            thresholds: [10, 25],   // for title
+            fallbackProgress: 2,
+        });
+
+    })
 
     otherTabs.forEach((tab) => {
         tab.addEventListener("click", () => {
-            carouselContainer.innerHTML = "";
+            elements.carouselContainer.innerHTML = "";
         });
     });
 
