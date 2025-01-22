@@ -222,7 +222,191 @@ async function handleAuthenticatedUser(userData) {
             fallbackProgress: 2,
         });
 
+        const statusPrice = document.querySelector(".status-price");
+        const priceInput = document.querySelector('.price-dollars');
+        const progressBarPrice = document.querySelector(".progress-bar-price");
+
+        // 2) Regex for a whole number + decimal point + exactly 2 digits
+        //    Examples of valid input:  "0.00", "12.34", "999.99"
+        //    Invalid: "12", "12.3", ".50", "12.345"
+        const dollarFormatRegex = /^\d+\.\d{2}$/;
+        priceInput.addEventListener("input", () => {
+            const value = priceInput.value.trim();
+
+            if (dollarFormatRegex.test(value)) {
+                progressBarPrice.style.width = "50%";
+                statusPrice.textContent = "Correct format.";
+                statusPrice.style.color = "#4caf50";
+                progressBarPrice.style.backgroundColor = "#4caf50";
+
+            } else {
+                progressBarPrice.style.width = "1%";
+                statusPrice.textContent = "Incorrect format.";
+                statusPrice.style.color = "#ff4d4d";
+                progressBarPrice.style.backgroundColor = "#ff4d4d";
+            }
+
+        })
+
+        const popupDateSelectionContainer = document.querySelector(".popup-date-selection-container");
+        const selectDateButton = document.getElementById("select-date");
+        let selectedDate = false;
+        selectDateButton.addEventListener("click", () => {
+            popupDateSelectionContainer.classList.toggle("active");
+
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            let currentMonth = 0; // January
+            let currentYear = 2025;
+            let currentDay = 0;
+
+            const calendarHeader = document.querySelector(".month-year");
+            const calendarGrid = document.querySelector(".calendar-grid");
+
+            function updateCalendarDaysButtonFunctionality() {
+                const calendarDays = document.querySelectorAll(".calendar-row span");
+
+                calendarDays.forEach(day => {
+                    day.addEventListener("click", () => {
+                        calendarDays.forEach(d => d.classList.remove("selected"));
+                        day.classList.add("selected");
+                        selectedDate = true;
+                        currentDay = day.innerText;
+                        const hourValue = dateInputs[0].value.trim();
+                        const minuteValue = dateInputs[1].value.trim();
+
+                        if (selectedDate && regexHours.test(hourValue) && regexMinutes.test(minuteValue)) {
+                            progressBarDate.style.width = "50%";
+                            statusDate.textContent = "Correct format.";
+                            statusDate.style.color = "#4caf50";
+                            progressBarDate.style.backgroundColor = "#4caf50";
+                            selectDateButton.innerText = `${monthNames[currentMonth]} ${currentDay}, ${currentYear} | ${hourValue}:${minuteValue}`;
+                        } else {
+                            progressBarDate.style.width = "1%";
+                            statusDate.textContent = "Incorrect format.";
+                            statusDate.style.color = "#ff4d4d";
+                            progressBarDate.style.backgroundColor = "#ff4d4d";
+                            selectDateButton.innerText = "Click to select date.";
+                        }
+                    });
+                });
+            }
+
+            function updateCalendar() {
+                // Update month and year in the header
+                calendarHeader.querySelector(".current-month").textContent = monthNames[currentMonth];
+                calendarHeader.querySelector(".current-year").textContent = currentYear;
+
+                // Clear existing calendar rows (skip the days-of-week header)
+                const calendarRows = Array.from(calendarGrid.querySelectorAll(".calendar-row"));
+                calendarRows.forEach(row => row.remove());
+
+                // Calculate first day of the current month and days in the month
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 = Sunday, 1 = Monday, etc.
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+                // Calculate the total cells required
+                const totalDays = firstDay + daysInMonth; // Days from previous + current month
+                const totalRows = Math.ceil(totalDays / 7); // Number of weeks required
+
+                // Generate the grid
+                let calendarHTML = "";
+                let dayCount = 1 - firstDay; // Start from the previous month's remaining days
+
+                for (let row = 0; row < totalRows; row++) {
+                    let weekHTML = "<div class='calendar-row'>";
+                    for (let col = 0; col < 7; col++) {
+                        if (dayCount < 1) {
+                            // Previous month's days
+                            weekHTML += `<span class="disabled">${daysInPrevMonth + dayCount}</span>`;
+                        } else if (dayCount > daysInMonth) {
+                            // Next month's days
+                            weekHTML += `<span class="disabled">${dayCount - daysInMonth}</span>`;
+                        } else {
+                            // Current month's days
+                            weekHTML += `<span>${dayCount}</span>`;
+                        }
+                        dayCount++;
+                    }
+                    weekHTML += "</div>";
+                    calendarHTML += weekHTML;
+                }
+
+                // Append the dynamically generated rows to the calendar grid
+                calendarGrid.innerHTML += calendarHTML;
+                updateCalendarDaysButtonFunctionality();
+            }
+
+
+            // Increment month
+            document.querySelector(".increment-month-button:first-of-type").addEventListener("click", () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateCalendar();
+                selectedDate = false;
+                progressBarDate.style.width = "1%";
+                statusDate.textContent = "Incorrect format.";
+                statusDate.style.color = "#ff4d4d";
+                progressBarDate.style.backgroundColor = "#ff4d4d";
+                selectDateButton.innerText = "Click to select date.";
+            });
+
+            // Decrement month
+            document.querySelector(".increment-month-button:last-of-type").addEventListener("click", () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateCalendar();
+                selectedDate = false;
+                progressBarDate.style.width = "1%";
+                statusDate.textContent = "Incorrect format.";
+                statusDate.style.color = "#ff4d4d";
+                progressBarDate.style.backgroundColor = "#ff4d4d";
+                selectDateButton.innerText = "Click to select date.";
+            });
+
+            // Initialize calendar
+            updateCalendar();
+
+            const regexHours = /^(0[0-9]|1[0-9]|2[0-3])$/;
+            const regexMinutes = /^[0-5][0-9]$/;
+            const dateInputs = [document.getElementById("HH-input"), document.getElementById("MM-input")];
+            const statusDate = document.querySelector(".status-date");
+            const progressBarDate = document.querySelector(".progress-bar-date");
+
+            dateInputs.forEach((input) => {
+                input.addEventListener("input", () => {
+                    const hourValue = dateInputs[0].value.trim();
+                    const minuteValue = dateInputs[1].value.trim();
+
+                    if (selectedDate && regexHours.test(hourValue) && regexMinutes.test(minuteValue)) {
+                        progressBarDate.style.width = "50%";
+                        statusDate.textContent = "Correct format.";
+                        statusDate.style.color = "#4caf50";
+                        progressBarDate.style.backgroundColor = "#4caf50";
+                        selectDateButton.innerText = `${monthNames[currentMonth]} ${currentDay}, ${currentYear} | ${hourValue}:${minuteValue}`;
+                    } else {
+                        progressBarDate.style.width = "1%";
+                        statusDate.textContent = "Incorrect format.";
+                        statusDate.style.color = "#ff4d4d";
+                        progressBarDate.style.backgroundColor = "#ff4d4d";
+                        selectDateButton.innerText = "Click to select date.";
+                    }
+                });
+            })
+
+        });
     })
+
 
     otherTabs.forEach((tab) => {
         tab.addEventListener("click", () => {

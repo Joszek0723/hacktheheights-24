@@ -83,7 +83,7 @@
                 <div class="carousel-set">
                     {{#each this}}
                     <div class="event-card">
-                        <img src="https://via.placeholder.com/300x200" alt="{{title}}">
+                        <img src="https://placehold.co/300x200" alt="{{title}}">
                         <div class="event-details">
                             <p class="event-title">{{title}}</p>
                             <p class="event-date">{{event_date}}</p>
@@ -99,7 +99,7 @@
                 <div class="title-section">
                     <h1 class="title">Title</h1>
                     <p class="subtitle">Use words people would search for when looking for your item.</p>
-                    <input type="text" id="title-input" class="title-input"
+                    <input type="text" autocomplete="off" id="title-input" class="title-input"
                         placeholder="Enter the title of your listing." maxlength="50">
                     <div class="progress-container-title">
                         <div class="progress-bar-title"></div>
@@ -124,50 +124,139 @@
                         </p>
                     </div>
                 </div>
-                <div class="price-section">
-                    <h1 class="price">Price</h1>
-                    <!-- <input type="number" id="price-input" class="price-input" placeholder="Enter listing price."> -->
-                    <!-- <div class="price-container">
-                        <span class="price-label">$</span>
-                        <input 
-                          type="text"
-                          class="price-dollars"
-                          placeholder="0"
-                          aria-label="Whole dollar amount"
-                        />
-                        <span class="price-decimal">.</span>
-                        <input
-                          type="text"
-                          class="price-cents"
-                          placeholder="00"
-                          aria-label="Cents"
-                          maxlength="2"
-                        />
-                      </div> -->
-                      <div class="price-container">
-                        <div class="dollar-container">
-                          <span class="price-label">$</span>
+                <div class="price-date-container">
+                    <div class="left-column">
+                        <div class="price-section">
+                            <h1 class="price">Price</h1>
+                            <div class="price-container">
+                                <div class="dollar-container">
+                                    <span class="price-label">$</span>
+                                </div>
+                                <div class="price-inputs">
+                                    <input
+                                        type="text"
+                                        class="price-dollars"
+                                        placeholder="0.00"
+                                        aria-label="Whole dollar amount"
+                                    />
+                                </div>
+                            </div>
+                            <div class="progress-container-price">
+                                <div class="progress-bar-price"></div>
+                                <p class="progress-text-price">
+                                    <span class="status-price">Incorrect format.</span> Make sure your input is a decimal value.
+                                </p>
+                            </div>
                         </div>
-                        <div class="price-inputs">
-                          <input
-                            type="text"
-                            class="price-dollars"
-                            placeholder="0"
-                            aria-label="Whole dollar amount"
-                          />
-                          <span class="price-decimal">.</span>
-                          <input
-                            type="text"
-                            class="price-cents"
-                            placeholder="00"
-                            aria-label="Cents"
-                            maxlength="2"
-                          />
+                        <div class="date-section">
+                            <h1 class="date">Date</h1>
+                            <p class="subdate">Use words people would search for when looking for your item.</p>
+                            <button id="select-date"><span>Click to select date.</span></button>
+                            <div class="progress-container-date">
+                                <div class="progress-bar-date"></div>
+                                <p class="progress-text-date">
+                                    <span class="status-date">Missing required field.</span>
+                                </p>
+                            </div>
                         </div>
-                      </div>
-                      
-                      
+                    </div>
+                    <div class="right-column">
+                        <!-- <div class="popup-date-selection-container" id="popup-date-selection-container">
+                        </div> -->
+                        <div class="popup-date-selection-container" id="popup-date-selection-container">
+                            <div class="custom-calendar">
+                                <div class="calendar-header">
+                                    <div class="month-year">
+                                        <span class="current-month">January</span>
+                                        <span class="current-year">2025</span>
+                                    </div>
+                                    <button class="increment-month-button">
+                                        <i class="fa-solid fa-arrow-right" id="rotated-icon-up"></i>
+                                    </button>
+                                    <button class="increment-month-button" id="increment-month-button-right">
+                                        <i class="fa-solid fa-arrow-right" id="rotated-icon-down"></i>
+                                    </button>
+                                </div>
+                                <div class="calendar-grid">
+                                    <div class="days-of-week">
+                                        <span>Sun</span>
+                                        <span>Mon</span>
+                                        <span>Tue</span>
+                                        <span>Wed</span>
+                                        <span>Thu</span>
+                                        <span>Fri</span>
+                                        <span>Sat</span>
+                                    </div>
+                                    <!-- <div class="calendar-row">
+                                        <span class="disabled">29</span>
+                                        <span class="disabled">30</span>
+                                        <span class="disabled">31</span>
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>3</span>
+                                        <span>4</span>
+                                    </div>
+                                    <div class="calendar-row">
+                                        <span>5</span>
+                                        <span>6</span>
+                                        <span>7</span>
+                                        <span>8</span>
+                                        <span>9</span>
+                                        <span>10</span>
+                                        <span>11</span>
+                                    </div>
+                                    <div class="calendar-row">
+                                        <span>12</span>
+                                        <span>13</span>
+                                        <span>14</span>
+                                        <span>15</span>
+                                        <span class="selected">16</span>
+                                        <span>17</span>
+                                        <span>18</span>
+                                    </div>
+                                    <div class="calendar-row">
+                                        <span>19</span>
+                                        <span>20</span>
+                                        <span>21</span>
+                                        <span>22</span>
+                                        <span>23</span>
+                                        <span>24</span>
+                                        <span>25</span>
+                                    </div>
+                                    <div class="calendar-row">
+                                        <span>26</span>
+                                        <span>27</span>
+                                        <span>28</span>
+                                        <span>29</span>
+                                        <span>30</span>
+                                        <span>31</span>
+                                        <span class="disabled">1</span>
+                                    </div> -->
+                                </div>
+                                <div class="time-container">
+                                    <div class="time-label">
+                                        <i class="fa-regular fa-clock"></i>
+                                        <span>Time</span>
+                                    </div>
+                                    <div class="time-inputs">
+                                        <div class="time-box">
+                                            <input id="HH-input" type="text" maxlength="2" placeholder="HH"/>
+                                        </div>
+                                        <span class="time-separator">:</span>
+                                        <div class="time-box">
+                                            <input id="MM-input" type="text" maxlength="2" placeholder="MM"/>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>                        
+                    </div>
                 </div>
+                <!-- <div class="popup-date-selection-container" id="popup-date-selection-container">
+                    <div class="popup-date-selection-box">
+                        <button id="close-popup-date-selection">Close</button>
+                    </div>
+                </div> -->
                 </script>
             </div>
             <div class="fade-overlay"></div>

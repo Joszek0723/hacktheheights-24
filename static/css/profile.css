@@ -803,37 +803,43 @@ body {
 
 /* Title Section */
 .description-section,
-.title-section {
+.title-section,
+.price-date-container {
     margin: 0 5% 0 5%;
     padding: 0 2rem;
     width: 90%;
+    gap: 15px;
 }
 
-.price-section {
-    margin: 0 5% 5% 5%;
+/* .price-section,
+.date-section {
+    margin: 0 5% 0 5%;
     padding: 0 2rem;
     width: 90%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+} */
 
+.date-section {
+    margin-bottom: 10%;
 }
 
 .description,
 .title,
-.price {
+.price,
+.date {
     font-size: 2.5rem;
     font-weight: 400;
+    margin-bottom: 0.5rem;
 }
 
-.description,
-.title {
+/* .description,
+.title,
+.price {
     margin-bottom: 0.5rem;  
-}
+} */
 
 .subdescription,
-.subtitle {
+.subtitle,
+.subprice {
     font-size: 1rem;
     color: white;
     font-weight: 300;
@@ -842,18 +848,22 @@ body {
 
 /* Input Field */
 .description-input,
-.title-input,
-.price-input {
+.title-input {
     padding: 0.8rem;
     font-size: 1rem;
     border: 3px solid rgba(0, 0, 0, 0);
     border-radius: 6px;
     background-color: #f2f0ef;
-    resize: none; /* Prevent resizing */
-    overflow-wrap: break-word; /* Break words if too long */
-    word-wrap: break-word; /* Legacy support for older browsers */
-    overflow-y: auto; /* Enable vertical scrolling when needed */
-    overflow-x: hidden; /* Disable horizontal scrolling */
+    resize: none;
+    /* Prevent resizing */
+    overflow-wrap: break-word;
+    /* Break words if too long */
+    word-wrap: break-word;
+    /* Legacy support for older browsers */
+    overflow-y: auto;
+    /* Enable vertical scrolling when needed */
+    overflow-x: hidden;
+    /* Disable horizontal scrolling */
     box-sizing: border-box;
     font-family: "Montserrat", "sans-serif";
 }
@@ -863,42 +873,37 @@ body {
     width: 100%;
 }
 
-.price-input {
-    width: 50%;
-}
-
 #description-input {
-    min-height: 7rem; /* Adjust the height as needed */
-}
-
-#title-input {
-    min-height: 5rem; /* Adjust the height as needed */
+    min-height: 7rem;
+    /* Adjust the height as needed */
 }
 
 .description-input:focus,
-.title-input:focus,
-.price-input:focus {
+.title-input:focus {
     border-color: #f2f0ef;
     outline: none;
 }
 
 .description-input::placeholder,
-.title-input::placeholder,
-.price-input::placeholder {
+.title-input::placeholder {
     color: black;
     font-family: "Montserrat", "sans-serif";
 }
 
 /* Progress Bar and Text */
 .progress-container,
-.progress-container-title {
+.progress-container-title,
+.progress-container-price,
+.progress-container-date {
     display: flex;
     flex-direction: column;
     margin-top: 0.5rem;
 }
 
 .progress-bar,
-.progress-bar-title {
+.progress-bar-title,
+.progress-bar-price,
+.progress-bar-date {
     height: 6px;
     background-color: #ff4d4d;
     border-radius: 3px;
@@ -914,14 +919,23 @@ body {
     width: 2%;
 }
 
+.progress-bar-price,
+.progress-bar-date {
+    width: 1%;
+}
+
 .progress-text,
-.progress-text-title {
+.progress-text-title,
+.progress-text-price,
+.progress-text-date {
     font-size: 0.9rem;
     color: white;
 }
 
 .progress-text .status,
-.progress-text-title .status-title {
+.progress-text-title .status-title,
+.progress-text-price .status-price,
+.progress-text-date .status-date {
     color: #ff4d4d;
     font-weight: 600;
 }
@@ -931,9 +945,11 @@ body {
     color: white;
     font-weight: 600;
 }
+
 /* Textarea Scrollbar Styling */
 .description-input::-webkit-scrollbar {
-    width: 10px; /* Set the width of the scrollbar */
+    width: 10px;
+    /* Set the width of the scrollbar */
 }
 
 /* .title-input::-webkit-scrollbar-track {
@@ -961,141 +977,376 @@ body {
             color-stop(0.72, rgb(76, 45, 147)),
             color-stop(0.86, rgb(50, 30, 100)));
 }
-/* 
-.price-container {
-    display: inline-flex;     
-    align-items: center;       
-    background-color: #fff;      
-    border: 1px solid #ccc;     
-    border-radius: 6px;
-    padding: 0.5rem;            
-    color: #000;                 
-    box-sizing: border-box;     
-    width: 30%;
-    height: 50%;
-  }
-  
-  .price-label,
-  .price-decimal {
-    font-weight: normal;
-    color: #000;
-    font-size: 1.5rem;
-  }
-  
-  .price-dollars,
-  .price-cents {
-    border: none;
-    background: transparent;
-    margin: 0 0.2rem;       
-    font-size: 1.5rem;
-    color: #000;          
-    width: 2.5rem;       
-    font-family: "Montserrat", "sans-serif";
-  }
-  
-
-  .price-cents {
-    text-align: left;
-  }
-
-  .price-dollars {
-    text-align: right;
-  }
-  
-
-  .price-dollars:focus,
-  .price-cents:focus {
-    outline: none;
-  }
-
-  .price-dollars::placeholder,
-  .price-cents::placeholder {
-    color: black;
-    font-family: "Montserrat", "sans-serif";
-  }
-  
- 
-  .price-container:focus-within {
-    border-color: #6c43c9;
-  }
-   */
 
 /* 1. Overall container */
 .price-container {
-    display: flex;                /* put both sub-containers side by side */
-    width: 30%;                   /* adjust as needed */
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    overflow: hidden;             /* ensures sub-containers share the rounded corners */
-    box-sizing: border-box;
-  }
-  
-  /* 2. Purple container for the dollar sign */
-  .dollar-container {
-    background-color: #6c43c9;    /* purple */
     display: flex;
-    align-items: center;          /* center the dollar sign vertically */
-    justify-content: center;      /* center horizontally (optional) */
-    padding: 0 0.5rem;            /* horizontal space */
-    color: #fff;                  /* white text on purple bg */
-  }
-  
-  .price-label {
-    font-size: 1.5rem;
+    width: 50%;
+    /* adjust as needed */
+    /* border: 1px solid #ccc; */
+    border-radius: 6px;
+    overflow: hidden;
+    /* ensures sub-containers share the rounded corners */
+    box-sizing: border-box;
+}
+
+/* 2. Purple container for the dollar sign */
+.dollar-container {
+    background-color: #f2f0ef;
+    /* purple */
+    display: flex;
+    align-items: center;
+    /* center the dollar sign vertically */
+    justify-content: center;
+    /* center horizontally (optional) */
+    padding: 0 0 0 1rem;
+    /* horizontal space */
+    color: black;
+    /* white text on purple bg */
+}
+
+.price-label {
+    font-size: 1rem;
     font-weight: normal;
-    margin: 0;                    /* remove default spacing */
-  }
-  
-  /* 3. White container for numeric inputs */
-  .price-inputs {
+    margin: 0;
+    /* remove default spacing */
+}
+
+/* 3. White container for numeric inputs */
+.price-inputs {
     display: inline-flex;
     align-items: center;
-    background-color: #fff;
-    padding: 0.5rem;
-    flex: 1;                      /* let this container expand to fill remaining space */
+    background-color: #f2f0ef;
+    padding: 0.8rem 0 0.8rem 0;
+    flex: 1;
+    /* let this container expand to fill remaining space */
     box-sizing: border-box;
-  }
-  
-  /* 4. Dollar & cents inputs */
-  .price-dollars,
-  .price-cents {
+    width: 100%;
+}
+
+/* 4. Dollar & cents inputs */
+.price-dollars {
     border: none;
     background: transparent;
-    margin: 0 0.2rem;
-    font-size: 1.5rem;
+    /* margin: 0 0.2rem; */
+    font-size: 1rem;
     font-family: "Montserrat", sans-serif;
     color: #000;
-    width: 2.5rem;                /* adjust as needed */
     /* Remove default outline */
     outline: none;
-  }
-  
-  /* Placeholders styled black (optional) */
-  .price-dollars::placeholder,
-  .price-cents::placeholder {
+    width: 100%;
+}
+
+/* Placeholders styled black (optional) */
+.price-dollars::placeholder {
     color: #000;
     font-family: "Montserrat", sans-serif;
-  }
-  
-  /* Align the "dollars" right, "cents" left if desired */
-  .price-dollars {
-    text-align: right;
-  }
-  .price-cents {
-    text-align: left;
-  }
-  
-  /* Decimal point styling */
-  .price-decimal {
-    font-size: 1.5rem;
-    color: #000;                  /* match input color */
-    font-weight: normal;
-    margin: 0 0.2rem;            /* small spacing */
-  }
-  
-  /* 5. Show a focus state on the entire container
+}
+
+/* 5. Show a focus state on the entire container
         when ANY input is focused */
-  .price-container:focus-within {
-    border-color: #6c43c9;        /* purple focus highlight */
-  }
-  
+.price-container:focus-within {
+    border-color: #6c43c9;
+    /* purple focus highlight */
+}
+
+#select-date {
+    padding: 0.8rem;
+    background-color: #f2f0ef;
+    color: black;
+    font-family: "Montserrat", "sans-serif";
+    font-size: 1rem;
+    border: none;
+    border-radius: 6px;
+    min-width: 50%;
+    text-align: left;
+}
+
+/* Popup Container */
+/* .popup-date-selection-container {
+    display: none;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    padding: 20px;
+    width: 200px;
+} */
+
+.popup-date-selection-container.active {
+    display: flex;
+}
+
+
+/* .popup-date-selection-container button {
+    padding: 10px 20px;
+    background-color: #6c43c9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+} */
+
+/* .popup-date-selection-container button:hover {
+    background-color: #5a3b9e;
+} */
+
+.price-date-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+
+.right-column {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex: 0.6;
+    margin-top: -7.5%;
+}
+
+.popup-date-selection-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #1a1a1a; */
+    /* padding: 20px; */
+    border-radius: 10px;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.2);
+    /* border-radius: 16px; */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    max-width: 375px;
+}
+
+.custom-calendar {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: "Montserrat", "sans-serif";
+}
+
+.calendar-header {
+    /* display: flex;
+    justify-content: space-between; */
+    align-items: center;
+    padding: 10px 0;
+    background: #6c43c9;
+    color: #fff; /* Ensure text remains readable */
+    border-radius: 6px; /* Optional: Add rounded edges */
+    margin: 7.5px;
+    display: flex;
+    flex-direction: row;
+    max-height: 30px;
+}
+
+.nav-btn {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.nav-btn:hover {
+    color: #a77dfa;
+}
+
+.month-year {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #f2f0ef;
+    gap: 5%;
+    width: 90%;
+    padding-left: 17.5%;
+}
+
+.current-month {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.current-year {
+    font-size: 1.2rem;
+    font-weight: 200;
+}
+
+.calendar-grid {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.calendar-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: center;
+    padding: 5px 0;
+    margin: 0 7.5px;
+}
+
+.calendar-row span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    /* margin: 2px; */
+    font-size: 0.9rem;
+    cursor: pointer;
+    /* transition: background-color 0.3s ease, color 0.3s ease; */
+}
+
+.days-of-week {
+    font-size: 0.9rem;
+    color: white;
+    font-weight: 100;
+    border-bottom: 1px solid white;
+    padding-bottom: 5px;
+    margin: 0 7.5px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    justify-items: center;
+    padding: 5px 0;
+    margin: 0 7.5px;
+}
+
+.days-of-week span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    /* margin: 2px; */
+    font-size: 0.9rem;
+    cursor: pointer;
+    /* transition: background-color 0.3s ease, color 0.3s ease; */
+}
+
+.calendar-row span:hover {
+    background-color: #6c43c9;
+    color: #fff;
+    border-radius: 40%;
+}
+
+.calendar-row .selected {
+    background-color: #6c43c9;
+    color: #fff;
+    border-radius: 40%;
+}
+
+.calendar-row .disabled {
+    color: white;
+    font-weight: 100;
+    pointer-events: none;
+}
+
+.time-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Montserrat", "sans-serif";
+    font-size: 15px;
+    color: white;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 0 5px 0;
+    margin: 7.5px;
+    border-top: 1px solid white;
+}
+
+.time-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    padding-left: 6%;
+}
+
+.time-label i {
+    font-size: 18px;
+}
+
+.time-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-right: 6%;
+}
+
+.time-box {
+    display: flex;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 5px;
+    width: 40px;
+    height: 20px;
+    text-align: center;
+    /* background: #f8f8f8; */
+}
+
+.time-box input {
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-size: 0.9rem;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    font-weight: 300;
+    color: white;
+    font-family: "Montserrat", "sans-serif";
+}
+
+.time-box input::placeholder {
+    color: white;
+}
+
+.time-separator {
+    font-size: 15px;
+    font-weight: 300;
+    color: white;
+}
+
+#rotated-icon-up {
+    transform: rotate(-90deg);
+    display: inline-block; /* Ensures proper rotation rendering */
+    transition: transform 0.3s ease; /* Optional: Smooth rotation animation */
+}
+
+#rotated-icon-down {
+    transform: rotate(90deg);
+    display: inline-block; /* Ensures proper rotation rendering */
+    transition: transform 0.3s ease; /* Optional: Smooth rotation animation */
+}
+
+.increment-month-button {
+    background: rgba(0, 0, 0, 0);
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+#increment-month-button-right {
+    padding-right: 5%;
+}
